@@ -1,0 +1,30 @@
+S -> F
+F -> int id ( L ) { X W return E ; }
+L -> D
+L -> D , L
+B -> { X W }
+X -> D ; X
+X ->
+D -> int id
+W -> C W
+W ->
+C -> B
+C -> id = E ;
+C -> if ( E ) C
+C -> while ( E ) C
+E -> E || E
+E -> E && E
+E -> E == E
+E -> E != E
+E -> E < E
+E -> E + E
+E -> E - E
+E -> E * E
+E -> E / E
+E -> E % E
+E -> ( E )
+E -> id
+E -> num
+E -> id ( P )
+P -> E
+P -> E , P

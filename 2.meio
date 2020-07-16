@@ -1,0 +1,48 @@
+int
+ID f
+(
+int
+ID n
+)
+{
+int
+ID a
+;
+int
+ID b
+;
+ID b
+=
+NUM 1
+;
+if
+(
+(
+ID n
+<
+NUM 1
+)
+==
+NUM 0
+)
+{
+ID a
+=
+ID n
+-
+NUM 1
+;
+ID b
+=
+ID f
+(
+ID a
+)
+;
+}
+return
+ID n
+*
+ID b
+;
+}
