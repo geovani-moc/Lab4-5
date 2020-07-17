@@ -58,19 +58,18 @@ vector<tuple<string, int, int *>> Frame::identificar_variaveis(Arvore_parse &arv
             identificar_variaveis(raiz->filhos[i], variaveis);
         }
     }
-    
 
     return variaveis;
 }
 
-void identificar_variaveis(No_arv_parse *no_arvore, vector<tuple<string, int, int*>> &variaveis)
+void identificar_variaveis(No_arv_parse *no_arvore, vector<tuple<string, int, int *>> &variaveis)
 {
     if (no_arvore->tok.nome.compare("D") == 0)
     {
-        tuple<string, int, int*> temporario;
+        tuple<string, int, int *> temporario;
         get<0>(temporario) = no_arvore->filhos[1]->tok.imagem;
         get<1>(temporario) = (-16) - (8 * (int)variaveis.size());
-        get<2>(temporario) = (int*) malloc(sizeof(int));
+        get<2>(temporario) = (int *)malloc(sizeof(int));
 
         variaveis.push_back(temporario);
     }
@@ -85,11 +84,42 @@ void identificar_variaveis(No_arv_parse *no_arvore, vector<tuple<string, int, in
     }
 }
 
-
 vector<tuple<string, int, int *>> Frame::identificar_parametros(Arvore_parse &arvore)
 {
     vector<tuple<string, int, int *>> parametros;
     No_arv_parse *raiz = arvore.raiz;
 
+    int quantidade_filhos = (int)raiz->filhos.size();
+
+    for (int i = 0; i < quantidade_filhos; ++i)
+    {
+        if (raiz->filhos[i]->regra == -1)
+        {
+            identificar_parametros(raiz->filhos[i], parametros);
+        }
+    }
+
     return parametros;
+}
+
+void Frame::identificar_parametros(No_arv_parse *no_arvore, vector<tuple<string, int, int *>> &parametros)
+{
+    if (no_arvore->tok.nome.compare("P") == 0)// falta extrair o paramentro
+    {
+        tuple<string, int, int *> temporario;
+        get<0>(temporario) = no_arvore->filhos[1]->tok.imagem;
+        get<1>(temporario) = (-16) - (8 * ((int)parametros.size() + posicoes_das_variaveis.size()));
+        get<2>(temporario) = (int *)malloc(sizeof(int));
+
+        parametros.push_back(temporario);
+    }
+    int tamanho = (int)no_arvore->filhos.size();
+
+    for (int i = 0; i < tamanho; ++i)
+    {
+        if (no_arvore->filhos[i]->regra == -1)
+        {
+            identificar_parametros(no_arvore->filhos[i], parametros);
+        }
+    }
 }

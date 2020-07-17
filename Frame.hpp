@@ -26,6 +26,7 @@ private://posicoes definidas em relacao ao stack pointer
     void identificar_variaveis(No_arv_parse *no_arvore, vector<tuple<string, int, int*>> &variaveis);
 
     vector<tuple<string, int, int*>> identificar_parametros(Arvore_parse &arvore);
+    void identificar_parametros(No_arv_parse *no_arvore, vector<tuple<string, int, int*>> &parametros);
 
 public:
     Frame(Arvore_parse &arvore);
