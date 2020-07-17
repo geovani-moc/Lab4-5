@@ -4,23 +4,25 @@
 #include <vector>
 #include <utility>
 #include <string>
+#include <tuple>
 
 #include "Arvore.hpp"
 
 class Frame
 {
 private://posicoes definidas em relacao ao stack pointer
-    int posicao_frame_pointer_anterior;
-    int posicao_endereco_de_retorno;
-    vector<pair<string, int>> posicoes_das_variaveis;
-    vector<pair<string, int>> posicoes_dos_parametros;
-    int posicao_valor_de_retorno;
+    pair<int, int*> posicao_frame_pointer_anterior;
+    pair<int, int*> posicao_endereco_de_retorno;
 
+    vector<tuple<string, int, int*>> posicoes_das_variaveis;
+    vector<tuple<string, int, int*>> posicoes_dos_parametros;
+
+    pair<int, int*> posicao_valor_de_retorno;
     int tamanho_frame;
 
     int calcula_tamanho_do_frame();
-    vector<pair<string, int>> identificar_variaveis(Arvore_parse &arvore);
-    vector<pair<string, int>> identificar_parametros(Arvore_parse &arvore);
+    vector<tuple<string, int, int*>> identificar_variaveis(Arvore_parse &arvore);
+    vector<tuple<string, int, int*>> identificar_parametros(Arvore_parse &arvore);
 
 public:
     Frame(Arvore_parse &arvore);
