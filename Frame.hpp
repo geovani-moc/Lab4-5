@@ -21,7 +21,10 @@ private://posicoes definidas em relacao ao stack pointer
     int tamanho_frame;
 
     int calcula_tamanho_do_frame();
+
     vector<tuple<string, int, int*>> identificar_variaveis(Arvore_parse &arvore);
+    void identificar_variaveis(No_arv_parse *no_arvore, vector<tuple<string, int, int*>> &variaveis);
+
     vector<tuple<string, int, int*>> identificar_parametros(Arvore_parse &arvore);
 
 public:
