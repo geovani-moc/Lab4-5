@@ -3,3 +3,6 @@ all:
 
 debug:
 	g++ *.cpp -g
+
+teste:
+	./a.out < 2.meio
