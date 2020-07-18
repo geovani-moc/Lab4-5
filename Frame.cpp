@@ -55,7 +55,7 @@ vector<tuple<string, int, int *>> Frame::identificar_variaveis(Arvore_parse &arv
 
     int quantidade_filhos = (int)raiz->filhos.size();
 
-    for (int i = 0; i < quantidade_filhos; ++i)
+    for (int i = 6; i < quantidade_filhos; ++i)
     {
         if (raiz->filhos[i]->regra != -1)
         {
