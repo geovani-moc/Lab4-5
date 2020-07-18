@@ -1,0 +1,11 @@
+int f(int n){
+	int a;
+	int b;
+	int c;
+	int d;
+	a = n-1;
+	a = n-1;
+	b = f(a);
+	c = f(a);
+	return n * b ;
+}

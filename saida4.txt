@@ -1,0 +1,51 @@
+int
+ID f
+(
+int
+ID n
+)
+{
+int
+ID a
+;
+int
+ID b
+;
+int
+ID c
+;
+int
+ID d
+;
+ID a
+=
+ID n
+-
+NUM 1
+;
+ID a
+=
+ID n
+-
+NUM 1
+;
+ID b
+=
+ID f
+(
+ID a
+)
+;
+ID c
+=
+ID f
+(
+ID a
+)
+;
+return
+ID n
+*
+ID b
+;
+}
