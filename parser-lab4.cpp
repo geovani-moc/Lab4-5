@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
     //LAB 04
     Frame frame(arv);
-    cout << frame.get_tamanho_do_frame() << endl;
+    cout << "Tamanho do frame: " << frame.get_tamanho_do_frame() << "bytes" << endl;
 
     return 0;
 }
