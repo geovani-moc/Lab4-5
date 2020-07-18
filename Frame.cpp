@@ -97,7 +97,7 @@ vector<tuple<string, int, int *>> Frame::identificar_parametros(Arvore_parse &ar
 
     for (int i = 0; i < quantidade_filhos; ++i)
     {
-        if (raiz->filhos[i]->regra == -1)
+        if (raiz->filhos[i]->regra != -1)
         {
             identificar_parametros(raiz->filhos[i], parametros);
         }
@@ -121,7 +121,7 @@ void Frame::identificar_parametros(No_arv_parse *no_arvore, vector<tuple<string,
 
     for (int i = 0; i < tamanho; ++i)
     {
-        if (no_arvore->filhos[i]->regra == -1)
+        if (no_arvore->filhos[i]->regra != -1)
         {
             identificar_parametros(no_arvore->filhos[i], parametros);
         }

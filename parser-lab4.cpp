@@ -51,8 +51,9 @@ int main(int argc, char *argv[])
     cerr << func->params->dec->identif->nome <<endl;
     */
 
+    //LAB 04
     Frame frame(arv);
     cout << frame.get_tamanho_do_frame() << endl;
-    
+
     return 0;
 }
