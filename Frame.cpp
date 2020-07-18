@@ -11,6 +11,10 @@ Frame::Frame(Arvore_parse &arvore)
     tamanho_frame = calcula_tamanho_do_frame();
 }
 
+Frame::~Frame(){
+
+}
+
 int Frame::calcula_tamanho_do_frame()
 {
     return 8 * (int)(3 + posicoes_das_variaveis.size() + posicoes_dos_parametros.size());
@@ -53,7 +57,7 @@ vector<tuple<string, int, int *>> Frame::identificar_variaveis(Arvore_parse &arv
 
     for (int i = 0; i < quantidade_filhos; ++i)
     {
-        if (raiz->filhos[i]->regra == -1)
+        if (raiz->filhos[i]->regra != -1)
         {
             identificar_variaveis(raiz->filhos[i], variaveis);
         }
@@ -62,7 +66,7 @@ vector<tuple<string, int, int *>> Frame::identificar_variaveis(Arvore_parse &arv
     return variaveis;
 }
 
-void identificar_variaveis(No_arv_parse *no_arvore, vector<tuple<string, int, int *>> &variaveis)
+void Frame::identificar_variaveis(No_arv_parse *no_arvore, vector<tuple<string, int, int *>> &variaveis)
 {
     if (no_arvore->tok.nome.compare("D") == 0)
     {
@@ -77,7 +81,7 @@ void identificar_variaveis(No_arv_parse *no_arvore, vector<tuple<string, int, in
 
     for (int i = 0; i < tamanho; ++i)
     {
-        if (no_arvore->filhos[i]->regra == -1)
+        if (no_arvore->filhos[i]->regra != -1)
         {
             identificar_variaveis(no_arvore->filhos[i], variaveis);
         }
@@ -107,7 +111,7 @@ void Frame::identificar_parametros(No_arv_parse *no_arvore, vector<tuple<string,
     if (no_arvore->tok.nome.compare("P") == 0)// falta extrair o paramentro
     {
         tuple<string, int, int *> temporario;
-        get<0>(temporario) = no_arvore->filhos[1]->tok.imagem;
+        get<0>(temporario) = "parametro" + to_string(parametros.size());
         get<1>(temporario) = (-16) - (8 * ((int)parametros.size() + posicoes_das_variaveis.size()));
         get<2>(temporario) = (int *)malloc(sizeof(int));
 
