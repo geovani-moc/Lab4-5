@@ -70,6 +70,7 @@ ListaComandos* Arvore_parse::extrai_ListaComandos(No_arv_parse * no){
 
 Exp* Arvore_parse::extrai_Exp(No_arv_parse * no){
   if (no->regra >=14 && no->regra <=23) {
+    cout << no->filhos[1]->tok.imagem << " # " << no->filhos[1]->tok.nome << " [Arvore.cpp:73]" << endl;
     return new ExpOper(no->filhos[1]->tok, extrai_Exp(no->filhos[0]), extrai_Exp(no->filhos[2]));
   }
   if (no->regra == 24) {

@@ -21,7 +21,12 @@ ExpNum::ExpNum(Token n):num(n){}
 ExpChamada::ExpChamada(ID* nom, ListaExpressoes* l): nome_funcao_chamada(nom), lista_exp(l) {}
 ListaExpressoes::ListaExpressoes(Exp* e, ListaExpressoes* l): exp(e), prox(l) {}
 
+string ComandoBloco::TypeClass() { return "ComandoBloco"; }
+string ComandoAtrib::TypeClass() { return "ComandoAttrib"; }
+string ComandoIF::TypeClass() { return "ComandoIF"; }
+string ComandoWhile::TypeClass() { return "ComandoWhile"; }
 
-
-
-
+string ExpOper::TypeClass() { return "ExpOper"; }
+string ExpID::TypeClass() { return "ExpID"; }
+string ExpNum::TypeClass() { return "ExpNum"; }
+string ExpChamada::TypeClass() { return "ExpChamada"; }

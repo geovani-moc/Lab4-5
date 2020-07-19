@@ -2,102 +2,90 @@
 #define _INTERMEDREPRESENTATION_HPP_
 #include <string>
 
-#define BINOP_PLUS 0
-#define BINOP_MINUS 1
-#define BINOP_MUL 2
-#define BINOP_DIV 3
-#define BINOP_AND 4
-#define BINOP_OR 5
-#define BINOP_LSHIFT 6
-#define BINOP_RSHIFT 6
-#define BINOP_ARSHIFT 8
-#define BINOP_XOR 9
-#define BINOP_LSHIFT 10
-
 using namespace std;
 
-class Exp {};
-class Stm {};
+class Exp_ir {};
+class Stm_ir {};
 
 class Explist {
     public:
-        Exp *head;
+        Exp_ir *head;
         Explist *tail;
-        Explist(Exp *h, Explist *t);
+        Explist(Exp_ir *h, Explist *t);
 };
 
 class StmList {
     public:
-        Stm *head;
+        Stm_ir *head;
         StmList *tail;
-        StmList(Stm *h, Stm *t);
+        StmList(Stm_ir *h, Stm_ir *t);
 };
 
-class Label: public Stm {
+class Label: public Stm_ir {
     public:
         string label;
         Label(string l);
 };
 
 
-class Const: public Exp {
+class Const: public Exp_ir {
     public:
         int value;
         Const(int v);
 };
 
-class Name: public Exp {
+class Name: public Exp_ir {
     public:
         Label *label;
         Name(Label *l);
 };
 
-class Temp: public Exp {
+class Temp: public Exp_ir {
     public:
         string temp;
         int value;
         Temp(string t, int v);
 };
 
-class Binop: public Exp {
+class Binop: public Exp_ir {
     public:
-        int binop;
-        Exp *left;
-        Exp *right;
-        Binop(int b, Exp *l, Exp *r);
+        string binop;
+        Exp_ir *left;
+        Exp_ir *right;
+        Binop(string b, Exp_ir *l, Exp_ir *r);
 };
 
-class Mem: public Exp {
+class Mem: public Exp_ir {
     public:
-        Exp *exp;
-        Mem(Exp *e);
+        Exp_ir *exp;
+        Mem(Exp_ir *e);
 };
 
-class Call: public Exp {
+class Call: public Exp_ir {
     public:
-        Exp *func;
+        Exp_ir *func;
         Explist *args;
-        Call(Exp *f, Explist *a);
+        Call(Exp_ir *f, Explist *a);
 };
 
-class Eseq: public Exp {
+class Eseq: public Exp_ir {
     public:
-        Stm *stm;
-        Exp *exp;
-        Eseq(Stm *s, Exp *e);
+        Stm_ir *stm;
+        Exp_ir *exp;
+        Eseq(Stm_ir *s, Exp_ir *e);
 };
 
-class Move: public Stm {
+class Move: public Stm_ir {
     public:
-        Exp* dist;
-        Exp* src;
-        Move(Exp *d, Exp *s);
+        Exp_ir *dist;
+        Exp_ir *src;
+        Move(Exp_ir *d, Exp_ir *s);
 };
 
-class Ex: public Exp {
+class Ex: public Exp_ir {
     public:
-        Exp *exp;
-        Ex(Exp *e);
+        Exp_ir *exp;
+        Ex(Exp_ir *e);
 };
 
 class LabelList {
@@ -107,28 +95,28 @@ class LabelList {
         LabelList(Label *l, LabelList *t);
 };
 
-class Jump: public Stm {
+class Jump: public Stm_ir {
     public:
-        Exp *exp;
+        Exp_ir *exp;
         LabelList *labellist;
-        Jump(Exp *e, LabelList *l);
+        Jump(Exp_ir *e, LabelList *l);
 };
 
-class Cjump: public Stm {
+class Cjump: public Stm_ir {
     public:
         int relop;
-        Exp *left;
-        Exp *right;
+        Exp_ir *left;
+        Exp_ir *right;
         Label *iftrue;
         Label *iffalse;
-        Cjump(int re, Exp *le, Exp *ri, Label *ift, Label *iff);
+        Cjump(int re, Exp_ir *le, Exp_ir *ri, Label *ift, Label *iff);
 };
 
-class Seq: public Stm {
+class Seq: public Stm_ir {
     public:
-        Stm *left;
-        Stm *right;
-        Seq(Stm *l, Stm *r);
+        Stm_ir *left;
+        Stm_ir *right;
+        Seq(Stm_ir *l, Stm_ir *r);
 };
 
 #endif

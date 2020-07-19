@@ -45,6 +45,7 @@ int main(int argc, char * argv[]) {
   Funcao * func = arv.extrai_funcao();
   cerr << func->ident_funcao->nome <<endl;
   cerr << func->params->dec->identif->nome <<endl;
+  cerr << func->coms->prox->com->TypeClass() << endl;
   return 0;
 }
 

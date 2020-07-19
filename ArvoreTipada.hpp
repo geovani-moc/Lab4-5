@@ -68,12 +68,15 @@ public:
 };
 
 class Comando {
+  public:
+    virtual string TypeClass() = 0;
 };
 
 class ComandoBloco : public Comando {
 public:
   Bloco* bloco;
   ComandoBloco(Bloco* b);
+  string TypeClass();
 };
 
 class ComandoAtrib : public Comando {
@@ -81,6 +84,7 @@ public:
   ID* id;
   Exp* exp;
   ComandoAtrib(ID* i, Exp* e);
+  string TypeClass();
 };
 
 class ComandoIF : public Comando {
@@ -88,6 +92,7 @@ public:
   Exp* cond;
   Comando* com;
   ComandoIF(Exp* condi, Comando* coma);
+  string TypeClass();
 };
 
 class ComandoWhile : public Comando {
@@ -95,6 +100,7 @@ public:
   Exp* cond;
   Comando* com;
   ComandoWhile(Exp* condi, Comando* coma);
+  string TypeClass();
 };
 
 class Bloco {
@@ -102,10 +108,11 @@ public:
   ListaDeclaracao* lista_dec;
   ListaComandos* lista_com;
   Bloco(ListaDeclaracao* lista_dec, ListaComandos* lista_com);
-  
 };
 
 class Exp{
+  public:
+    virtual string TypeClass() = 0;
 };
 
 class ExpOper : public Exp {
@@ -114,18 +121,21 @@ public:
   Exp* esq;
   Exp* dir;
   ExpOper(  Token operador, Exp* esq,Exp* dir);
+  string TypeClass();
 };
 
 class ExpID : public Exp {
 public:
   ID* id;
   ExpID(ID* id);
+  string TypeClass();
 };
 
 class ExpNum : public Exp {
 public:
   Token num;
   ExpNum(Token n);
+  string TypeClass();
 };
 
 class ExpChamada : public Exp {
@@ -133,6 +143,7 @@ public:
   ID* nome_funcao_chamada;
   ListaExpressoes* lista_exp;
   ExpChamada(ID* nom, ListaExpressoes* l);
+  string TypeClass();
 };
 
 class ListaExpressoes {
@@ -140,5 +151,6 @@ public:
   Exp* exp;
   ListaExpressoes* prox;
   ListaExpressoes(Exp* e, ListaExpressoes* l);
+  string TypeClass();
 };
 #endif
