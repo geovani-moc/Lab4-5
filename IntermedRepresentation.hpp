@@ -7,11 +7,11 @@ using namespace std;
 class Exp_ir {};
 class Stm_ir {};
 
-class Explist {
+class ExpList {
     public:
         Exp_ir *head;
-        Explist *tail;
-        Explist(Exp_ir *h, Explist *t);
+        ExpList *tail;
+        ExpList(Exp_ir *h, ExpList *t);
 };
 
 class StmList {
@@ -30,8 +30,8 @@ class Label: public Stm_ir {
 
 class Const: public Exp_ir {
     public:
-        int value;
-        Const(int v);
+        string value;
+        Const(string v);
 };
 
 class Name: public Exp_ir {
@@ -43,8 +43,8 @@ class Name: public Exp_ir {
 class Temp: public Exp_ir {
     public:
         string temp;
-        int value;
-        Temp(string t, int v);
+        string value;
+        Temp(string t, string v);
 };
 
 class Binop: public Exp_ir {
@@ -64,8 +64,8 @@ class Mem: public Exp_ir {
 class Call: public Exp_ir {
     public:
         Exp_ir *func;
-        Explist *args;
-        Call(Exp_ir *f, Explist *a);
+        ExpList *args;
+        Call(Exp_ir *f, ExpList *a);
 };
 
 class Eseq: public Exp_ir {
@@ -104,12 +104,12 @@ class Jump: public Stm_ir {
 
 class Cjump: public Stm_ir {
     public:
-        int relop;
+        string relop;
         Exp_ir *left;
         Exp_ir *right;
         Label *iftrue;
         Label *iffalse;
-        Cjump(int re, Exp_ir *le, Exp_ir *ri, Label *ift, Label *iff);
+        Cjump(string re, Exp_ir *le, Exp_ir *ri, Label *ift, Label *iff);
 };
 
 class Seq: public Stm_ir {
