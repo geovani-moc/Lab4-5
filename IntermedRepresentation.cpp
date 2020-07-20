@@ -1,6 +1,6 @@
 #include "IntermedRepresentation.hpp"
 
-Explist::Explist(Exp_ir*h, Exp_ir*t): head(h), tail(t) {}
+ExpList::Explist(Exp_ir*h, Exp_ir*t): head(h), tail(t) {}
 StmList::StmList(Stm_ir *h, StmList *t): head(h), tail(t) {}
 Label::Label(string l): label(l) {}
 Const::Const(string v): value(v) {}
