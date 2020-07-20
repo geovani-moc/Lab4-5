@@ -11,22 +11,22 @@
 class Frame
 {
 private://posicoes definidas em relacao ao stack pointer
-    pair<int, int*> posicao_frame_pointer_anterior;
-    pair<int, int*> posicao_endereco_de_retorno;
+    pair<int, int*> frame_pointer_anterior;
+    pair<int, int*> endereco_de_retorno;
 
-    vector<tuple<string, int, int*>> posicoes_das_variaveis;
-    vector<tuple<string, int, int*>> posicoes_dos_parametros;
+    vector<tuple<string, int, int*>> variaveis;
+    vector<tuple<string, int, int*>> parametros;
 
-    pair<int, int*> posicao_valor_de_retorno;
+    pair<int, int*> valor_de_retorno;
     int tamanho_frame;
 
     int calcula_tamanho_do_frame();
 
-    vector<tuple<string, int, int*>> identificar_variaveis(Arvore_parse &arvore);
-    void identificar_variaveis(No_arv_parse *no_arvore, vector<tuple<string, int, int*>> &variaveis);
+    void identificar_variaveis(Arvore_parse &arvore);
+    void identificar_variaveis(No_arv_parse *no_arvore);
 
-    vector<tuple<string, int, int*>> identificar_parametros(Arvore_parse &arvore);
-    void identificar_parametros(No_arv_parse *no_arvore, vector<tuple<string, int, int*>> &parametros);
+    void identificar_parametros(Arvore_parse &arvore);
+    void identificar_parametros(No_arv_parse *no_arvore);
 
 public:
     Frame(Arvore_parse &arvore);
