@@ -29,6 +29,7 @@ private://posicoes definidas em relacao ao stack pointer
     void identificar_parametros(No_arv_parse *no_arvore);
 
 public:
+    Frame();
     Frame(Arvore_parse &arvore);
     ~Frame();
     int get_tamanho_do_frame();

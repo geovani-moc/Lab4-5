@@ -1,5 +1,9 @@
 #include "Frame.hpp"
 
+Frame::Frame(){
+    
+}
+
 Frame::Frame(Arvore_parse &arvore)
 {
     endereco_de_retorno.first = 0;

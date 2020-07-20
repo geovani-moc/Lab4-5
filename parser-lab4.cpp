@@ -46,10 +46,6 @@ int main(int argc, char *argv[])
     Parser parser(arq_gramatica, arq_tabela_lr1);
     //  parser.tabela.debug();
     Arvore_parse arv = parser.executa_parse(cin);
-    /*Funcao * func = arv.extrai_funcao();
-    cerr << func->ident_funcao->nome <<endl;
-    cerr << func->params->dec->identif->nome <<endl;
-    */
 
     //LAB 04
     Frame frame(arv);
