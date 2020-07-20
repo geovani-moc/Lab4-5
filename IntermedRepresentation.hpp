@@ -18,7 +18,7 @@ class StmList {
     public:
         Stm_ir *head;
         StmList *tail;
-        StmList(Stm_ir *h, Stm_ir *t);
+        StmList(Stm_ir *h, StmList *t);
 };
 
 class Label: public Stm_ir {

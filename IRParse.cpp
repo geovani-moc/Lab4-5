@@ -5,8 +5,8 @@ class Exp;
 Exp_ir* IRParse::extrai_exp(Exp *exp){
     if(exp->TypeClass().compare("ExpID") == 0) {
         return new Mem( new Binop(  "+", // aqui sempre será feita uma soma do FP com o "delta a"
-                                    new Temp("FP",/*Valor de FP (string)*/),
-                                    new Const(/*número do id da tabela do lab4*/)));
+                                    new Temp("FP",/*Valor de FP (string)*/"teste"),
+                                    new Const(/*número do id da tabela do lab4*/"12")));
     }
     if(exp->TypeClass().compare("ExpOper") == 0) {
         return new Binop(   ((ExpOper *)exp)->operador.imagem,
@@ -23,17 +23,15 @@ Exp_ir* IRParse::extrai_exp(Exp *exp){
     }
 }
 
-ExpList* IRParse::extrai_lista_de_expressoes(ListaExpressoes * explist) {
-    if(explist != NULL) {
-        return new ExpList( ((ListaExpressoes *)explist)->exp,
-                            extrai_lista_de_expressoes(((ListaExpressoes *)explist)->prox));
+
+
+/*ExpList* IRParse::extrai_lista_de_declaracoes(ListaDeclaracao * declist) {
+    if(declist != NULL) {
+        return new ExpList( extrai_exp(declist->dec),
+                            extrai_lista_de_declaracoes(declist->prox) );
     }
     return NULL;
-}
-
-
-
-
+}*/
 
 //usando a padronização do livro
 Stm_ir* IRParse::extrai_comando(Comando *command) {
@@ -48,8 +46,8 @@ Stm_ir* IRParse::extrai_comando(Comando *command) {
 
     if(command->TypeClass().compare("ComandoAtrib") == 0) {
         return new Move( new Mem(new Binop( "+", // aqui sempre será feita uma soma do FP com o "delta a"
-                                            new Temp("FP",/*Valor de FP (string)*/),
-                                            new Const(/*número do id da tabela do lab4*/))),
+                                            new Temp("FP",/*Valor de FP (string)*/"teste"),
+                                            new Const(/*número do id da tabela do lab4*/"12"))),
                         extrai_exp( ((ComandoAtrib*)command)->exp) );
     }
 
@@ -63,9 +61,24 @@ Stm_ir* IRParse::extrai_comando(Comando *command) {
     cerr << "não executou nenhum return [IRParse.cpp:59]" << endl;
 }
 
-//Seq_ir* IRParse::extrai_funcao(Funcao *funcao) {
-//    return new Move(new Mem( new Binop(  "+", // aqui sempre será feita uma soma do FP com o "delta a"
-//                                    new Temp("FP",/*Valor de FP (string)*/),
-//                                    new Const(/*número do retorno da tabela do lab4*/))),Call(extrai_exp(funcao->coms),/*extrai_declaracoes*/funcao->decls));
-//}
+Stm_ir* IRParse::extrai_funcao(Funcao *function) {
+    return extrai_lista_de_comandos(function->coms);
+    //return new Eseq(new Move(   new Temp("temp","r1"),
+    //                            Call(new Name( new Label(function->ident_funcao->nome)),extrai_lista_de_declaracoes(function->decls))),
+    //                new Temp("temp","r1"));
+}
 
+Stm_ir* IRParse::extrai_lista_de_comandos(ListaComandos *commands) {
+    if(commands != NULL) {
+        return new Seq(extrai_comando(commands->com), extrai_lista_de_comandos(commands->prox));
+    }
+    return NULL;
+}
+
+ExpList* IRParse::extrai_lista_de_expressoes(ListaExpressoes * explist) {
+    if(explist != NULL) {
+        return new ExpList( extrai_exp(explist->exp),
+                            extrai_lista_de_expressoes(explist->prox) );
+    }
+    return NULL;
+}

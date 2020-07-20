@@ -13,6 +13,7 @@ using namespace std;
 #include "TabelaLR1.hpp"
 #include "Arvore.hpp"
 #include "Parser.hpp"
+#include "IRParse.hpp"
 
 
 int main(int argc, char * argv[]) {
@@ -43,9 +44,14 @@ int main(int argc, char * argv[]) {
   //  parser.tabela.debug();
   Arvore_parse arv = parser.executa_parse(cin);
   Funcao * func = arv.extrai_funcao();
+
+  IRParse ir_parser;
   cerr << func->ident_funcao->nome <<endl;
   cerr << func->params->dec->identif->nome <<endl;
   cerr << func->coms->prox->com->TypeClass() << endl;
+
+  
+  Stm_ir* IR = ir_parser.extrai_funcao(func);
   return 0;
 }
 
