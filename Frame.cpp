@@ -11,7 +11,8 @@ Frame::Frame(Arvore_parse &arvore)
     tamanho_frame = calcula_tamanho_do_frame();
 }
 
-Frame::~Frame(){
+Frame::~Frame()
+{
     int tamanho;
 }
 
@@ -33,15 +34,13 @@ int Frame::get_posicao(string &nome)
     int tamanho = variaveis.size();
     for (int i = 0; i < tamanho; i++)
     {
-        if (get<0>(variaveis[i]) == nome)
-            return get<1>(variaveis[i]);
+        if (get<0>(variaveis[i]) == nome) return get<1>(variaveis[i]);
     }
 
     tamanho = parametros.size();
     for (int i = 0; i < tamanho; i++)
     {
-        if (get<0>(parametros[i]) == nome)
-            return get<1>(parametros[i]);
+        if (get<0>(parametros[i]) == nome) return get<1>(parametros[i]);
     }
 
     cerr << "\nErro: varivavel ou parametro nao encontrada no frame." << endl;
@@ -56,10 +55,7 @@ void Frame::identificar_variaveis(Arvore_parse &arvore)
 
     for (int i = 6; i < quantidade_filhos; ++i)
     {
-        if (raiz->filhos[i]->regra != -1)
-        {
-            identificar_variaveis(raiz->filhos[i]);
-        }
+        if (raiz->filhos[i]->regra != -1) identificar_variaveis(raiz->filhos[i]);
     }
 }
 
@@ -78,10 +74,7 @@ void Frame::identificar_variaveis(No_arv_parse *no_arvore)
 
     for (int i = 0; i < tamanho; ++i)
     {
-        if (no_arvore->filhos[i]->regra != -1)
-        {
-            identificar_variaveis(no_arvore->filhos[i]);
-        }
+        if (no_arvore->filhos[i]->regra != -1) identificar_variaveis(no_arvore->filhos[i]);
     }
 }
 
@@ -94,10 +87,7 @@ void Frame::identificar_parametros(Arvore_parse &arvore)
 
     for (int i = 0; i < quantidade_filhos; ++i)
     {
-        if (raiz->filhos[i]->regra != -1)
-        {
-            identificar_parametros(raiz->filhos[i]);
-        }
+        if (raiz->filhos[i]->regra != -1) identificar_parametros(raiz->filhos[i]);
     }
 }
 
@@ -116,9 +106,6 @@ void Frame::identificar_parametros(No_arv_parse *no_arvore)
 
     for (int i = 0; i < tamanho; ++i)
     {
-        if (no_arvore->filhos[i]->regra != -1)
-        {
-            identificar_parametros(no_arvore->filhos[i]);
-        }
+        if (no_arvore->filhos[i]->regra != -1) identificar_parametros(no_arvore->filhos[i]);
     }
 }
