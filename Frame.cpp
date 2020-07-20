@@ -3,17 +3,27 @@
 Frame::Frame(Arvore_parse &arvore)
 {
     endereco_de_retorno.first = 0;
+    endereco_de_retorno.second = (int*)malloc(sizeof(int));
+
     frame_pointer_anterior.first = -8;
+    frame_pointer_anterior.second = (int*)malloc(sizeof(int));
+
     identificar_variaveis(arvore);
     identificar_parametros(arvore);
+
     valor_de_retorno.first = ((int)(variaveis.size() + parametros.size() + 2)) * (-8);
+    valor_de_retorno.second = (int*)malloc(sizeof(int));
 
     tamanho_frame = calcula_tamanho_do_frame();
 }
 
 Frame::~Frame()
 {
-    int tamanho;
+    int tamanho = (int)variaveis.size();
+    for (int i = 0; i < tamanho; ++i) free(get<2>(variaveis[i]));
+
+    tamanho = (int)parametros.size();
+    for (int i = 0; i < tamanho; ++i) free(get<2>(parametros[i]));
 }
 
 int Frame::calcula_tamanho_do_frame()
