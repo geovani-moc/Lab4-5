@@ -26,12 +26,19 @@ private:
     void criar_representacao(No_arv_parse *nodo);
     int identifica_caso(No_arv_parse *nodo);
 
+    void representar_if(No_arv_parse *condicao, No_arv_parse *bloco);
+    void representar_while(No_arv_parse *condicao, No_arv_parse *bloco);
+    void representar_atribuicao(No_arv_parse *nodo);
+    void representar_chamada_de_funcao(No_arv_parse *nodo);
+    void representar_acesso_de_variavel(No_arv_parse *nodo);
+    void representar_acesso_de_constante(No_arv_parse *nodo);
+    void representar_operacao_binaria(No_arv_parse *nodo);
+
 public:
     Representacao_intermediaria(Arvore_parse &arvore);
     ~Representacao_intermediaria();
 
     string get_representaocao_intermediaria();
 };
-
 
 #endif
