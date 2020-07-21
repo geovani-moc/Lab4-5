@@ -11,8 +11,8 @@
 class Frame
 {
 private://posicoes definidas em relacao ao stack pointer
-    int frame_pointer_anterior;
     int endereco_de_retorno;
+    int frame_pointer_anterior;
 
     vector<tuple<string, int>> variaveis;
     vector<tuple<string, int>> parametros;

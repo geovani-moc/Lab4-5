@@ -1,23 +1,26 @@
 #include "RepresentacaoIntermediaria.hpp"
 
-Representacao_intermediaria::Representacao_intermediaria(Arvore_parse &arvore)
+No_arvore_RI::No_arvore_RI()
 {
-    frame = Frame(arvore);
-    criar_representacao(arvore);
+
 }
 
-Representacao_intermediaria::~Representacao_intermediaria()
+Arvore_RI::Arvore_RI(Arvore_parse &arvore_parse)
 {
-}
+    frame = Frame(arvore_parse);
+    criar_representacao(arvore_parse);
+    raiz = NULL;
 
-string Representacao_intermediaria::get_representaocao_intermediaria()
+}
+string Arvore_RI::get_representacao_intermediaria()
 {
+    string representacao_intermediaria;
     return representacao_intermediaria;
 }
 
-void Representacao_intermediaria::criar_representacao(Arvore_parse &arvore)
+void Arvore_RI::criar_representacao(Arvore_parse &arvore_parse)
 {
-    No_arv_parse *raiz = arvore.raiz;
+    No_arv_parse *raiz = arvore_parse.raiz;
 
     int tamanho = (int)raiz->filhos.size();
 
@@ -31,7 +34,7 @@ void Representacao_intermediaria::criar_representacao(Arvore_parse &arvore)
     }
 }
 
-void Representacao_intermediaria::criar_representacao(No_arv_parse *nodo)
+void Arvore_RI::criar_representacao(No_arv_parse *nodo)
 {
     int caso = identifica_caso(nodo);
     //representar sequencia, falta adicionar
@@ -63,22 +66,24 @@ void Representacao_intermediaria::criar_representacao(No_arv_parse *nodo)
     }
 }
 
-int Representacao_intermediaria::identifica_caso(No_arv_parse *nodo)
+int Arvore_RI::identifica_caso(No_arv_parse *nodo)
 {
     return 1;
 }
 
-void Representacao_intermediaria::representar_if(No_arv_parse *condicao, No_arv_parse *bloco)
+void Arvore_RI::representar_if(No_arv_parse *condicao, No_arv_parse *bloco)
 {}
-void Representacao_intermediaria::representar_while(No_arv_parse *condicao, No_arv_parse *bloco)
+void Arvore_RI::representar_while(No_arv_parse *condicao, No_arv_parse *bloco)
 {}
-void Representacao_intermediaria::representar_atribuicao(No_arv_parse *nodo)
+void Arvore_RI::representar_atribuicao(No_arv_parse *nodo)
 {}
-void Representacao_intermediaria::representar_chamada_de_funcao(No_arv_parse *nodo)
+void Arvore_RI::representar_chamada_de_funcao(No_arv_parse *nodo)
 {}
-void Representacao_intermediaria::representar_acesso_de_variavel(No_arv_parse *nodo)
+void Arvore_RI::representar_acesso_de_variavel(No_arv_parse *nodo)
 {}
-void Representacao_intermediaria::representar_acesso_de_constante(No_arv_parse *nodo)
+void Arvore_RI::representar_acesso_de_constante(No_arv_parse *nodo)
 {}
-void Representacao_intermediaria::representar_operacao_binaria(No_arv_parse *nodo)
+void Arvore_RI::representar_operacao_binaria(No_arv_parse *nodo)
 {}
+
+

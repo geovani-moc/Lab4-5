@@ -16,10 +16,19 @@
 
 using namespace std;
 
-class Representacao_intermediaria
+class No_arvore_RI
 {
 private:
-    string representacao_intermediaria;
+    pair<int, string> representacao;
+    vector<No_arvore_RI*> derivacao;
+public:
+    No_arvore_RI();
+};
+
+class Arvore_RI
+{
+private:
+    No_arvore_RI * raiz;
     Frame frame;
 
     void criar_representacao(Arvore_parse &arvore);
@@ -33,12 +42,10 @@ private:
     void representar_acesso_de_variavel(No_arv_parse *nodo);
     void representar_acesso_de_constante(No_arv_parse *nodo);
     void representar_operacao_binaria(No_arv_parse *nodo);
-
 public:
-    Representacao_intermediaria(Arvore_parse &arvore);
-    ~Representacao_intermediaria();
-
-    string get_representaocao_intermediaria();
+    Arvore_RI(Arvore_parse &arvore_parse);
+    string get_representacao_intermediaria();
 };
+
 
 #endif
