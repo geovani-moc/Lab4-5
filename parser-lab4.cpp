@@ -44,11 +44,11 @@ int main(int argc, char * argv[]) {
   Arvore_parse arv = parser.executa_parse(cin);
   Funcao * func = arv.extrai_funcao();
 
-  IRParse ir_parser;
   cerr << func->ident_funcao->nome <<endl;
   cerr << func->params->dec->identif->nome <<endl;
   cerr << func->coms->prox->com->TypeClass() << endl;
   
+  IRParse ir_parser;
   Stm_ir* IR = ir_parser.extrai_funcao(func);
   return 0;
 }
