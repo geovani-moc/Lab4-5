@@ -82,7 +82,7 @@ class Move: public Stm_ir {
         Move(Exp_ir *d, Exp_ir *s);
 };
 
-class Ex: public Exp_ir {
+class Ex: public Stm_ir {
     public:
         Exp_ir *exp;
         Ex(Exp_ir *e);

@@ -3,9 +3,10 @@
 class Exp;
 
 Exp_ir* IRParse::extrai_exp(Exp *exp){
+    cout << "adicionou nó equivalente a " << exp->TypeClass() << endl;
     if(exp->TypeClass().compare("ExpID") == 0) {
         return new Mem( new Binop(  "+", // aqui sempre será feita uma soma do FP com o "delta a"
-                                    new Temp("FP",/*Valor de FP (string)*/"teste"),
+                                    new Temp("FP",/*Valor de FP (string)*/"00"),
                                     new Const(/*número do id da tabela do lab4*/"12")));
     }
     if(exp->TypeClass().compare("ExpOper") == 0) {
@@ -17,9 +18,9 @@ Exp_ir* IRParse::extrai_exp(Exp *exp){
         return new Const( ((ExpNum *)exp)->num.imagem );
     }
     if(exp->TypeClass().compare("ExpChamada") == 0) {
-        return new Call( new Name( new Label(((ExpChamada *)exp)->nome_funcao_chamada->nome)),
+        return new Eseq(new Move(new Temp("temporario","r1"),new Call( new Name( new Label(((ExpChamada *)exp)->nome_funcao_chamada->nome)),
                          new ExpList( extrai_exp(((ExpChamada *)exp)->lista_exp->exp),
-                                      extrai_lista_de_expressoes( ((ExpChamada *)exp)->lista_exp->prox )));
+                                      extrai_lista_de_expressoes( ((ExpChamada *)exp)->lista_exp->prox )))), new Temp("temporario","r1"));
     }
 }
 
@@ -35,6 +36,7 @@ Exp_ir* IRParse::extrai_exp(Exp *exp){
 
 //usando a padronização do livro
 Stm_ir* IRParse::extrai_comando(Comando *command) {
+    cout << "adicionou nó equivalente a " << command->TypeClass() << endl;
     if(command->TypeClass().compare("ComandoIF") == 0) {
         return new Seq(new Cjump(   ((ExpOper*)((ComandoIF *)command)->cond)->operador.imagem,
                                     extrai_exp(((ExpOper*)((ComandoIF *)command)->cond)->esq),
@@ -56,7 +58,15 @@ Stm_ir* IRParse::extrai_comando(Comando *command) {
     }
 
     if(command->TypeClass().compare("ComandoWhile") == 0) {
-        cerr << "ComandoWhile ainda não implementado [IRParse.cpp:57]" << endl;
+        return new Seq(new Label("inicio"), new Seq( new Cjump( ((ExpOper*)((ComandoWhile*)command)->cond)->operador.imagem,
+                                                                extrai_exp(((ExpOper*)((ComandoWhile*)command)->cond)->esq),
+                                                                extrai_exp(((ExpOper*)((ComandoWhile*)command)->cond)->dir),
+                                                                new Label("verdadeiro"),
+                                                                new Label("falso")),
+                                                    new Seq(new Label("verdadeiro"),
+                                                            new Seq(extrai_comando(((ComandoWhile*)command)->com),
+                                                                    new Seq(new Jump( new Name(new Label("inicio")), new LabelList(new Label("inicio"),NULL)),
+                                                                            new Ex(new Name(new Label("fim"))))))));
     }
     cerr << "não executou nenhum return [IRParse.cpp:59]" << endl;
 }
