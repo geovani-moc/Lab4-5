@@ -22,6 +22,12 @@ Exp_ir* IRParse::extrai_exp(Exp *exp){
                          new ExpList( extrai_exp(((ExpChamada *)exp)->lista_exp->exp),
                                       extrai_lista_de_expressoes( ((ExpChamada *)exp)->lista_exp->prox )))), new Temp("temporario","r1"));
     }
+
+    if (exp != NULL) {
+        cerr << "não executou nenhum return ["<<exp->TypeClass()<<"][IRParse.cpp:27]" << endl;
+    } else {
+        cerr << "fim, NULL pointer" << endl;
+    } 
 }
 
 
@@ -54,7 +60,7 @@ Stm_ir* IRParse::extrai_comando(Comando *command) {
     }
 
     if(command->TypeClass().compare("ComandoBloco") == 0) {
-        cerr << "ComandoBloco ainda não implementado [IRParse.cpp:53]" << endl;
+        return extrai_lista_de_comandos( ((Bloco*)((ComandoBloco*)command)->bloco)->lista_com);
     }
 
     if(command->TypeClass().compare("ComandoWhile") == 0) {
@@ -68,7 +74,11 @@ Stm_ir* IRParse::extrai_comando(Comando *command) {
                                                                     new Seq(new Jump( new Name(new Label("inicio")), new LabelList(new Label("inicio"),NULL)),
                                                                             new Ex(new Name(new Label("fim"))))))));
     }
-    cerr << "não executou nenhum return [IRParse.cpp:59]" << endl;
+    if (command != NULL) {
+        cerr << "não executou nenhum return ["<<command->TypeClass()<<"][IRParse.cpp:59]" << endl;
+    } else {
+        cerr << "fim, NULL pointer" << endl;
+    } 
 }
 
 Stm_ir* IRParse::extrai_funcao(Funcao *function) {

@@ -22,7 +22,7 @@ ExpChamada::ExpChamada(ID* nom, ListaExpressoes* l): nome_funcao_chamada(nom), l
 ListaExpressoes::ListaExpressoes(Exp* e, ListaExpressoes* l): exp(e), prox(l) {}
 
 string ComandoBloco::TypeClass() { return "ComandoBloco"; }
-string ComandoAtrib::TypeClass() { return "ComandoAttrib"; }
+string ComandoAtrib::TypeClass() { return "ComandoAtrib"; }
 string ComandoIF::TypeClass() { return "ComandoIF"; }
 string ComandoWhile::TypeClass() { return "ComandoWhile"; }
 
