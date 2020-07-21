@@ -2,17 +2,18 @@
 
 class Exp;
 
-Exp_ir* IRParse::extrai_exp(Exp *exp){
-    cout << "adicionou nó equivalente a " << exp->TypeClass() << endl;
+Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
+    cerr << "adicionou nó equivalente a " << exp->TypeClass() << endl;
     if(exp->TypeClass().compare("ExpID") == 0) {
+        cerr << "Acessou ID [" <<((ID*)((ExpID*)exp)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer_anterior()<<endl;
         return new Mem( new Binop(  "+", // aqui sempre será feita uma soma do FP com o "delta a"
-                                    new Temp("FP",/*Valor de FP (string)*/"00"),
-                                    new Const(/*número do id da tabela do lab4*/"12")));
+                                    new Temp("FP",to_string(frame->get_posicao_frame_pointer_anterior())),
+                                    new Const(to_string(frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)))));
     }
     if(exp->TypeClass().compare("ExpOper") == 0) {
         return new Binop(   ((ExpOper *)exp)->operador.imagem,
-                            extrai_exp(((ExpOper *)exp)->esq),
-                            extrai_exp(((ExpOper *)exp)->dir) );
+                            extrai_exp(((ExpOper *)exp)->esq, frame),
+                            extrai_exp(((ExpOper *)exp)->dir, frame) );
     }
     if(exp->TypeClass().compare("ExpNum") == 0) {
         return new Const( ((ExpNum *)exp)->num.imagem );
@@ -20,8 +21,8 @@ Exp_ir* IRParse::extrai_exp(Exp *exp){
     if(exp->TypeClass().compare("ExpChamada") == 0) {
         string tempName = GerarNome("temp");
         return new Eseq(new Move(new Temp("temporario",tempName),new Call( new Name( new Label(((ExpChamada *)exp)->nome_funcao_chamada->nome)),
-                         new ExpList( extrai_exp(((ExpChamada *)exp)->lista_exp->exp),
-                                      extrai_lista_de_expressoes( ((ExpChamada *)exp)->lista_exp->prox )))), new Temp("temporario",tempName));
+                         new ExpList( extrai_exp(((ExpChamada *)exp)->lista_exp->exp, frame),
+                                      extrai_lista_de_expressoes( ((ExpChamada *)exp)->lista_exp->prox, frame )))), new Temp("temporario",tempName));
     }
 
     if (exp != NULL) {
@@ -42,7 +43,7 @@ Exp_ir* IRParse::extrai_exp(Exp *exp){
 }*/
 
 //usando a padronização do livro
-Stm_ir* IRParse::extrai_comando(Comando *command) {
+Stm_ir* IRParse::extrai_comando(Comando *command, Frame *frame) {
 
     cout << "adicionou nó equivalente a " << command->TypeClass() << endl;
 
@@ -50,22 +51,23 @@ Stm_ir* IRParse::extrai_comando(Comando *command) {
         string verdadeiro = GerarNome("verdadeiro");
         string depois = GerarNome("depois");        
         return new Seq(new Cjump(   ((ExpOper*)((ComandoIF *)command)->cond)->operador.imagem,
-                                    extrai_exp(((ExpOper*)((ComandoIF *)command)->cond)->esq),
-                                    extrai_exp(((ExpOper*)((ComandoIF *)command)->cond)->dir),
+                                    extrai_exp(((ExpOper*)((ComandoIF *)command)->cond)->esq, frame),
+                                    extrai_exp(((ExpOper*)((ComandoIF *)command)->cond)->dir, frame),
                                     new Label(verdadeiro),
                                     new Label(depois) ),
-                        new Seq( new Seq( new Label(verdadeiro), extrai_comando( ((ComandoIF *)command)->com) ), new Label(depois)));
+                        new Seq( new Seq( new Label(verdadeiro), extrai_comando( ((ComandoIF *)command)->com, frame) ), new Label(depois)));
     }
 
     if(command->TypeClass().compare("ComandoAtrib") == 0) {
+        cerr << "Acessou ID [" <<((ID*)((ComandoAtrib*)command)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ComandoAtrib*)command)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer_anterior()<<endl;
         return new Move( new Mem(new Binop( "+", // aqui sempre será feita uma soma do FP com o "delta a"
-                                            new Temp("FP",/*Valor de FP (string)*/"teste"),
-                                            new Const(/*número do id da tabela do lab4*/"12"))),
-                        extrai_exp( ((ComandoAtrib*)command)->exp) );
+                                            new Temp("FP",to_string(frame->get_posicao_frame_pointer_anterior())),
+                                            new Const(to_string(frame->get_posicao(((ID*)((ComandoAtrib*)command)->id)->nome))))),
+                        extrai_exp( ((ComandoAtrib*)command)->exp, frame) );
     }
 
     if(command->TypeClass().compare("ComandoBloco") == 0) {
-        return extrai_lista_de_comandos( ((Bloco*)((ComandoBloco*)command)->bloco)->lista_com);
+        return extrai_lista_de_comandos( ((Bloco*)((ComandoBloco*)command)->bloco)->lista_com, frame);
     }
 
     if(command->TypeClass().compare("ComandoWhile") == 0) {
@@ -74,12 +76,12 @@ Stm_ir* IRParse::extrai_comando(Comando *command) {
         string falso = GerarNome("falso");
         string fim = GerarNome("fim");
         return new Seq(new Label(inicio), new Seq( new Cjump( ((ExpOper*)((ComandoWhile*)command)->cond)->operador.imagem,
-                                                                extrai_exp(((ExpOper*)((ComandoWhile*)command)->cond)->esq),
-                                                                extrai_exp(((ExpOper*)((ComandoWhile*)command)->cond)->dir),
+                                                                extrai_exp(((ExpOper*)((ComandoWhile*)command)->cond)->esq, frame),
+                                                                extrai_exp(((ExpOper*)((ComandoWhile*)command)->cond)->dir, frame),
                                                                 new Label(verdadeiro),
                                                                 new Label(falso)),
                                                     new Seq(new Label(verdadeiro),
-                                                            new Seq(extrai_comando(((ComandoWhile*)command)->com),
+                                                            new Seq(extrai_comando(((ComandoWhile*)command)->com, frame),
                                                                     new Seq(new Jump( new Name(new Label(inicio)), new LabelList(new Label(inicio),NULL)),
                                                                             new Ex(new Name(new Label(fim))))))));
     }
@@ -90,24 +92,24 @@ Stm_ir* IRParse::extrai_comando(Comando *command) {
     } 
 }
 
-Stm_ir* IRParse::extrai_funcao(Funcao *function) {
-    return extrai_lista_de_comandos(function->coms);
+Stm_ir* IRParse::extrai_funcao(Funcao *function, Frame *frame) {
+    return extrai_lista_de_comandos(function->coms, frame);
     //return new Eseq(new Move(   new Temp("temp","r1"),
     //                            Call(new Name( new Label(function->ident_funcao->nome)),extrai_lista_de_declaracoes(function->decls))),
     //                new Temp("temp","r1"));
 }
 
-Stm_ir* IRParse::extrai_lista_de_comandos(ListaComandos *commands) {
+Stm_ir* IRParse::extrai_lista_de_comandos(ListaComandos *commands, Frame *frame) {
     if(commands != NULL) {
-        return new Seq(extrai_comando(commands->com), extrai_lista_de_comandos(commands->prox));
+        return new Seq(extrai_comando(commands->com, frame), extrai_lista_de_comandos(commands->prox, frame));
     }
     return NULL;
 }
 
-ExpList* IRParse::extrai_lista_de_expressoes(ListaExpressoes * explist) {
+ExpList* IRParse::extrai_lista_de_expressoes(ListaExpressoes * explist, Frame *frame) {
     if(explist != NULL) {
-        return new ExpList( extrai_exp(explist->exp),
-                            extrai_lista_de_expressoes(explist->prox) );
+        return new ExpList( extrai_exp(explist->exp, frame),
+                            extrai_lista_de_expressoes(explist->prox, frame) );
     }
     return NULL;
 }

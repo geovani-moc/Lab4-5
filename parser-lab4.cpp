@@ -14,6 +14,7 @@ using namespace std;
 #include "Arvore.hpp"
 #include "Parser.hpp"
 #include "IRParse.hpp"
+#include "Frame.hpp"
 
 int main(int argc, char * argv[]) {
   if (argc != 3 && argc != 1) {
@@ -42,13 +43,15 @@ int main(int argc, char * argv[]) {
   Parser parser(arq_gramatica, arq_tabela_lr1);
   //  parser.tabela.debug();
   Arvore_parse arv = parser.executa_parse(cin);
+  Frame frame(arv);
   Funcao * func = arv.extrai_funcao();
 
+  cerr << "tamanho do frame = " << frame.get_tamanho_do_frame() << endl;
   cerr << func->ident_funcao->nome <<endl;
   cerr << func->params->dec->identif->nome <<endl;
   cerr << func->coms->prox->com->TypeClass() << endl;
   
   IRParse ir_parser;
-  Stm_ir* IR = ir_parser.extrai_funcao(func);
+  Stm_ir* IR = ir_parser.extrai_funcao(func, &frame);
   return 0;
 }
