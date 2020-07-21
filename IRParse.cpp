@@ -18,16 +18,17 @@ Exp_ir* IRParse::extrai_exp(Exp *exp){
         return new Const( ((ExpNum *)exp)->num.imagem );
     }
     if(exp->TypeClass().compare("ExpChamada") == 0) {
-        return new Eseq(new Move(new Temp("temporario","r1"),new Call( new Name( new Label(((ExpChamada *)exp)->nome_funcao_chamada->nome)),
+        string tempName = GerarNome("temp");
+        return new Eseq(new Move(new Temp("temporario",tempName),new Call( new Name( new Label(((ExpChamada *)exp)->nome_funcao_chamada->nome)),
                          new ExpList( extrai_exp(((ExpChamada *)exp)->lista_exp->exp),
-                                      extrai_lista_de_expressoes( ((ExpChamada *)exp)->lista_exp->prox )))), new Temp("temporario","r1"));
+                                      extrai_lista_de_expressoes( ((ExpChamada *)exp)->lista_exp->prox )))), new Temp("temporario",tempName));
     }
 
     if (exp != NULL) {
         cerr << "não executou nenhum return ["<<exp->TypeClass()<<"][IRParse.cpp:27]" << endl;
     } else {
         cerr << "fim, NULL pointer" << endl;
-    } 
+    }
 }
 
 
@@ -42,14 +43,18 @@ Exp_ir* IRParse::extrai_exp(Exp *exp){
 
 //usando a padronização do livro
 Stm_ir* IRParse::extrai_comando(Comando *command) {
+
     cout << "adicionou nó equivalente a " << command->TypeClass() << endl;
+
     if(command->TypeClass().compare("ComandoIF") == 0) {
+        string verdadeiro = GerarNome("verdadeiro");
+        string depois = GerarNome("depois");        
         return new Seq(new Cjump(   ((ExpOper*)((ComandoIF *)command)->cond)->operador.imagem,
                                     extrai_exp(((ExpOper*)((ComandoIF *)command)->cond)->esq),
                                     extrai_exp(((ExpOper*)((ComandoIF *)command)->cond)->dir),
-                                    new Label(/*Definir um label para True*/ "verdade"),
-                                    new Label(/*Definir um label para False*/ "depois") ),
-                        new Seq( new Seq( new Label(/*label True*/"verdade"), extrai_comando( ((ComandoIF *)command)->com) ), new Label(/*label False*/"depois")));
+                                    new Label(verdadeiro),
+                                    new Label(depois) ),
+                        new Seq( new Seq( new Label(verdadeiro), extrai_comando( ((ComandoIF *)command)->com) ), new Label(depois)));
     }
 
     if(command->TypeClass().compare("ComandoAtrib") == 0) {
@@ -64,15 +69,19 @@ Stm_ir* IRParse::extrai_comando(Comando *command) {
     }
 
     if(command->TypeClass().compare("ComandoWhile") == 0) {
-        return new Seq(new Label("inicio"), new Seq( new Cjump( ((ExpOper*)((ComandoWhile*)command)->cond)->operador.imagem,
+        string inicio = GerarNome("inicio");
+        string verdadeiro = GerarNome("verdadeiro");
+        string falso = GerarNome("falso");
+        string fim = GerarNome("fim");
+        return new Seq(new Label(inicio), new Seq( new Cjump( ((ExpOper*)((ComandoWhile*)command)->cond)->operador.imagem,
                                                                 extrai_exp(((ExpOper*)((ComandoWhile*)command)->cond)->esq),
                                                                 extrai_exp(((ExpOper*)((ComandoWhile*)command)->cond)->dir),
-                                                                new Label("verdadeiro"),
-                                                                new Label("falso")),
-                                                    new Seq(new Label("verdadeiro"),
+                                                                new Label(verdadeiro),
+                                                                new Label(falso)),
+                                                    new Seq(new Label(verdadeiro),
                                                             new Seq(extrai_comando(((ComandoWhile*)command)->com),
-                                                                    new Seq(new Jump( new Name(new Label("inicio")), new LabelList(new Label("inicio"),NULL)),
-                                                                            new Ex(new Name(new Label("fim"))))))));
+                                                                    new Seq(new Jump( new Name(new Label(inicio)), new LabelList(new Label(inicio),NULL)),
+                                                                            new Ex(new Name(new Label(fim))))))));
     }
     if (command != NULL) {
         cerr << "não executou nenhum return ["<<command->TypeClass()<<"][IRParse.cpp:59]" << endl;
@@ -101,4 +110,12 @@ ExpList* IRParse::extrai_lista_de_expressoes(ListaExpressoes * explist) {
                             extrai_lista_de_expressoes(explist->prox) );
     }
     return NULL;
+}
+
+IRParse::IRParse(){
+    contador = 0;
+}
+
+string IRParse::GerarNome(string str) {
+    return str+to_string(contador++);
 }

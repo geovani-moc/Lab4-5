@@ -4,6 +4,9 @@
 #include "IntermedRepresentation.hpp"
 
 class IRParse {
+    private:
+        int contador;
+        string GerarNome(string str);
     public:
         Exp_ir* extrai_exp(Exp *exp);
         ExpList* extrai_lista_de_expressoes(ListaExpressoes *explist);
@@ -11,6 +14,7 @@ class IRParse {
         Stm_ir* extrai_funcao(Funcao *function);
         ExpList* extrai_lista_de_declaracoes(ListaDeclaracao *declist);
         Stm_ir* extrai_lista_de_comandos(ListaComandos *commands);
+        IRParse();
 };
 
 #endif

@@ -8,7 +8,6 @@
 #include <iterator>
 #include <algorithm>
 
-
 using namespace std;
 
 vector<string> vetor_de_uma_linha(string linha, char delim_col);

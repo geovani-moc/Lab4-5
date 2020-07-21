@@ -60,4 +60,3 @@ string to_upper(string x) {
   transform(str.begin(), str.end(),str.begin(), ::toupper);
   return str;
 }
-

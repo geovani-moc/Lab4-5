@@ -15,7 +15,6 @@ using namespace std;
 #include "Parser.hpp"
 #include "IRParse.hpp"
 
-
 int main(int argc, char * argv[]) {
   if (argc != 3 && argc != 1) {
     cerr << "Parametros nomes dos arquivos: 1) gramática e 2) lista de mapeamentos da tabela LR1" << endl;
@@ -49,9 +48,7 @@ int main(int argc, char * argv[]) {
   cerr << func->ident_funcao->nome <<endl;
   cerr << func->params->dec->identif->nome <<endl;
   cerr << func->coms->prox->com->TypeClass() << endl;
-
   
   Stm_ir* IR = ir_parser.extrai_funcao(func);
   return 0;
 }
-
