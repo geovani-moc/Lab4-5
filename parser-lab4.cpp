@@ -49,7 +49,7 @@ int main(int argc, char * argv[]) {
   cerr << "tamanho do frame = " << frame.get_tamanho_do_frame() << endl;
   cerr << func->ident_funcao->nome <<endl;
   cerr << func->params->dec->identif->nome <<endl;
-  cerr << func->coms->prox->com->TypeClass() << endl;
+  //cerr << func->coms->prox->com->TypeClass() << endl;
   
   IRParse ir_parser;
   Stm_ir* IR = ir_parser.extrai_funcao(func, &frame);
