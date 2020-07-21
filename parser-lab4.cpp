@@ -15,6 +15,7 @@ using namespace std;
 #include "Arvore.hpp"
 #include "Parser.hpp"
 #include "Frame.hpp"
+#include "RepresentacaoIntermediaria.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -52,6 +53,7 @@ int main(int argc, char *argv[])
     cout << "Tamanho do frame: " << frame.get_tamanho_do_frame() << " bytes" << endl;
 
     //LAB 05
+    Arvore_RI representacao_intermediaria(arv);
 
     return 0;
 }

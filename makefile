@@ -7,6 +7,8 @@ debug:
 teste:
 	./a.out < 2.meio
 
+t0: 
+	./a.out < 1.meio
 t1:
 	./a.out < teste.txt
 t2:
