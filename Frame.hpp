@@ -11,13 +11,13 @@
 class Frame
 {
 private://posicoes definidas em relacao ao stack pointer
-    pair<int, int*> frame_pointer_anterior;
-    pair<int, int*> endereco_de_retorno;
+    int frame_pointer_anterior;
+    int endereco_de_retorno;
 
-    vector<tuple<string, int, int*>> variaveis;
-    vector<tuple<string, int, int*>> parametros;
+    vector<tuple<string, int>> variaveis;
+    vector<tuple<string, int>> parametros;
 
-    pair<int, int*> valor_de_retorno;
+    int valor_de_retorno;
     int tamanho_frame;
 
     int calcula_tamanho_do_frame();
@@ -31,7 +31,6 @@ private://posicoes definidas em relacao ao stack pointer
 public:
     Frame();
     Frame(Arvore_parse &arvore);
-    ~Frame();
     int get_tamanho_do_frame();
     int get_posicao_frame_pointer_anterior();
     int get_posicao_endereco_retorno();

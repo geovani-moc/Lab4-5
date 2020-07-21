@@ -6,29 +6,17 @@ Frame::Frame(){
 
 Frame::Frame(Arvore_parse &arvore)
 {
-    endereco_de_retorno.first = 0;
-    endereco_de_retorno.second = (int*)malloc(sizeof(int));
-
-    frame_pointer_anterior.first = -8;
-    frame_pointer_anterior.second = (int*)malloc(sizeof(int));
+    endereco_de_retorno = 0;
+    frame_pointer_anterior = -8;
 
     identificar_variaveis(arvore);
     identificar_parametros(arvore);
 
-    valor_de_retorno.first = ((int)(variaveis.size() + parametros.size() + 2)) * (-8);
-    valor_de_retorno.second = (int*)malloc(sizeof(int));
+    valor_de_retorno = ((int)(variaveis.size() + parametros.size() + 2)) * (-8);
 
     tamanho_frame = calcula_tamanho_do_frame();
 }
 
-Frame::~Frame()
-{
-    int tamanho = (int)variaveis.size();
-    for (int i = 0; i < tamanho; ++i) free(get<2>(variaveis[i]));
-
-    tamanho = (int)parametros.size();
-    for (int i = 0; i < tamanho; ++i) free(get<2>(parametros[i]));
-}
 
 int Frame::calcula_tamanho_do_frame()
 {
@@ -37,11 +25,11 @@ int Frame::calcula_tamanho_do_frame()
 
 int Frame::get_tamanho_do_frame() { return tamanho_frame; }
 
-int Frame::get_posicao_frame_pointer_anterior() { return frame_pointer_anterior.first; }
+int Frame::get_posicao_frame_pointer_anterior() { return frame_pointer_anterior; }
 
-int Frame::get_posicao_endereco_retorno() { return endereco_de_retorno.first; }
+int Frame::get_posicao_endereco_retorno() { return endereco_de_retorno; }
 
-int Frame::get_posicao_valor_de_retorno() { return valor_de_retorno.first; }
+int Frame::get_posicao_valor_de_retorno() { return valor_de_retorno; }
 
 int Frame::get_posicao(string &nome)
 {
@@ -77,10 +65,9 @@ void Frame::identificar_variaveis(No_arv_parse *no_arvore)
 {
     if (no_arvore->tok.nome.compare("D") == 0)
     {
-        tuple<string, int, int *> temporario;
+        tuple<string, int> temporario;
         get<0>(temporario) = no_arvore->filhos[1]->tok.imagem;
         get<1>(temporario) = (-16) - (8 * (int)variaveis.size());
-        get<2>(temporario) = (int *)malloc(sizeof(int));
 
         variaveis.push_back(temporario);
     }
@@ -109,10 +96,9 @@ void Frame::identificar_parametros(No_arv_parse *no_arvore)
 {
     if (no_arvore->tok.nome.compare("P") == 0)
     {
-        tuple<string, int, int *> temporario;
+        tuple<string, int> temporario;
         get<0>(temporario) = "parametro" + to_string(parametros.size());
         get<1>(temporario) = (-16) - (8 * ((int)parametros.size() + variaveis.size()));
-        get<2>(temporario) = (int *)malloc(sizeof(int));
 
         parametros.push_back(temporario);
     }

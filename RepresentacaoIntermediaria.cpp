@@ -38,25 +38,25 @@ void Representacao_intermediaria::criar_representacao(No_arv_parse *nodo)
     switch (caso)
     {
     case IF:
-        representar_if();
+        //representar_if();
         break;
     case WHILE:
-        representar_while();
+        //representar_while();
         break;
     case ATRIBUICAO:
-        representar_atribuicao();
+        //representar_atribuicao();
         break;
     case CHAMADA_DE_FUNCAO:
-        representar_chamada_de_funcao();
+        //representar_chamada_de_funcao();
         break;
     case ACESSO_DE_VARIAVEL:
-        representar_acesso_de_variavel();
+        //representar_acesso_de_variavel();
         break;
     case ACESSO_DE_CONSTANTE:
-        representar_acesso_de_constante();
+        //representar_acesso_de_constante();
         break;
     case OPERACAO_BINARIA:
-        representar_operacao_binaria();
+        //representar_operacao_binaria();
         break;
     default:
         break;
