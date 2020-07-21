@@ -12,11 +12,10 @@ using namespace std;
 
 class No_arvore_RI
 {
-private:
+public:
     pair<int, string> representacao;
     vector<No_arvore_RI *> derivacao;
 
-public:
     No_arvore_RI();
 };
 
