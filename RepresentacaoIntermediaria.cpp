@@ -31,7 +31,6 @@ No_arvore_RI *Arvore_RI::gerar_representacao(No_arv_parse *no_arvore_parse)
     No_arvore_RI *novo = NULL;
     int tamanho = (int)no_arvore_parse->filhos.size();
     string nome = no_arvore_parse->tok.nome;
-    string operador;
 
     No_arvore_RI *temporario;
 
@@ -58,20 +57,27 @@ No_arvore_RI *Arvore_RI::gerar_representacao(No_arv_parse *no_arvore_parse)
 
     case BINOP:// tem que refazer
         novo = new No_arvore_RI;
-        operador = no_arvore_parse->filhos[2]->tok.nome;
 
-        novo = binop(operador, 
+        novo = binop(no_arvore_parse->filhos[2]->tok.nome, 
             gerar_representacao(no_arvore_parse->filhos[0]), 
             gerar_representacao(no_arvore_parse->filhos[2]));
         break;
 
     case ATRIBUICAO:
+        novo = new No_arvore_RI;
+
+        novo->representacao.first = "MOVE";
+        novo->derivacao.push_back(variavel(no_arvore_parse->filhos[0]));
+        novo->derivacao.push_back(
+            gerar_representacao(no_arvore_parse->filhos[2])
+        );
+
         break;
 
     case VARIAVEL:// tem que refazer
         novo = new No_arvore_RI;
         novo->representacao.first = "MEM";
-        operador = "+";
+        //operador = "+";
 
        /* nodo->derivacao.push_back(
             binop(operador, 
@@ -109,22 +115,24 @@ int Arvore_RI::definir_caso(int regra)
     return NENHUM;
 }
 
-No_arvore_RI *Arvore_RI::binop(string &operacao, No_arvore_RI *no1, No_arvore_RI *no2)//tem que refazer
+No_arvore_RI *Arvore_RI::binop(string &operacao, No_arvore_RI *no1, No_arvore_RI *no2)
 {   
     No_arvore_RI *novo = new No_arvore_RI;
     novo->representacao.first = "BINOP";
 
     No_arvore_RI *temporario = new No_arvore_RI;
     temporario->representacao.first = operacao;
-    novo->derivacao.push_back(temporario);
 
-    temporario = new No_arvore_RI;
-    //temporario->representacao = operador1;
     novo->derivacao.push_back(temporario);
+    novo->derivacao.push_back(no1);
+    novo->derivacao.push_back(no2);
 
-    temporario = new No_arvore_RI;
-    //temporario->representacao = operador2;
-    novo->derivacao.push_back(temporario);
+    return novo;
+}
+
+No_arvore_RI * Arvore_RI::variavel(No_arv_parse *no)
+{
+    No_arvore_RI *novo;
 
     return novo;
 }

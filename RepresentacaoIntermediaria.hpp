@@ -39,7 +39,8 @@ private:
     int definir_caso(int regra);
 
     No_arvore_RI *binop(string &operacao, No_arvore_RI *no1, No_arvore_RI *no2);
-
+    No_arvore_RI *variavel(No_arv_parse *no);
+    
 public:
     Arvore_RI(Arvore_parse &arvore_parse);
 };
