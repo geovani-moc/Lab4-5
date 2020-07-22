@@ -3,7 +3,7 @@
 class Exp;
 
 Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
-    //cerr << "adicionou nó equivalente a " << exp->TypeClass() << endl;
+    cerr << "adicionou nó equivalente a " << exp->TypeClass() << endl;
     if(exp->TypeClass().compare("ExpID") == 0) {
         //cerr << "Acessou ID [" <<((ID*)((ExpID*)exp)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer_anterior()<<endl;
         return new Mem( new Binop(  "+", // aqui sempre será feita uma soma do FP com o "delta a"
@@ -19,6 +19,7 @@ Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
         return new Const( ((ExpNum *)exp)->num.imagem );
     }
     if(exp->TypeClass().compare("ExpChamada") == 0) {
+        frame->AtribuiParamChamada();
         string tempName = GerarNome("temp");
         return new Eseq(new Move(new Temp("temporario",tempName),new Call( new Name( new Label(((ExpChamada *)exp)->nome_funcao_chamada->nome)),
                          new ExpList( extrai_exp(((ExpChamada *)exp)->lista_exp->exp, frame),
@@ -101,7 +102,7 @@ Stm_ir* IRParse::extrai_lista_de_comandos(ListaComandos *commands, Frame *frame)
 
 ExpList* IRParse::extrai_lista_de_expressoes(ListaExpressoes * explist, Frame *frame) {
     if(explist != NULL) {
-
+        frame->AtribuiParamChamada();
         return new ExpList( extrai_exp(explist->exp, frame),
                             extrai_lista_de_expressoes(explist->prox, frame) );
     }
@@ -127,7 +128,6 @@ void IRParse::extrai_lista_de_parametros(ListaParametro *paramList, Frame *frame
 void IRParse::extrai_lista_de_declaracoes(ListaDeclaracao *decList, Frame *frame) {
     if(decList != NULL) {
         frame->AtribuiID(decList->dec->identif->nome);
-        cout <<"Adicionado declaracao ["<< decList->dec->identif->nome << "] em [" << to_string(frame->get_posicao(decList->dec->identif->nome)) << "]" << endl;
         extrai_lista_de_declaracoes(decList->prox, frame);
     }
 }

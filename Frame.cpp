@@ -4,6 +4,7 @@ void Frame::AtribuiID(string str_id) {
     tuple<string, int> temporario;
     get<0>(temporario) = str_id;
     get<1>(temporario) = (-16) - (8 * ((int)variaveis.size()));
+    cout << "Adicionado declaracao ["<< str_id << "] em ["<<((-16) - (8 * ((int)variaveis.size())))<<"]" << endl;
     variaveis.push_back(temporario);
 }
 
@@ -36,6 +37,7 @@ int Frame::get_tamanho_do_frame() {
 }
 
 void Frame::AtribuiParamChamada() {
+    cout << "Adicionando chamada" << endl;
     AtribuiID("chamada"+to_string(contador++));
 }
 
