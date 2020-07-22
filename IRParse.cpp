@@ -80,9 +80,9 @@ Stm_ir* IRParse::extrai_comando(Comando *command, Frame *frame) {
                                                                             new Ex(new Name(new Label(fim))))))));
     }
     if (command != NULL) {
-        cerr << "não executou nenhum return ["<<command->TypeClass()<<"][IRParse.cpp:59]" << endl;
+        cerr << "[Erro:001]não executou nenhum return ["<<command->TypeClass()<<"]" << endl;
     } else {
-        cerr << "fim, NULL pointer" << endl;
+        cerr << "[info:001] NULL pointer" << endl;
     } 
 }
 
@@ -90,9 +90,6 @@ Stm_ir* IRParse::extrai_funcao(Funcao *function, Frame *frame) {
     extrai_lista_de_parametros(function->params, frame);
     extrai_lista_de_declaracoes(function->decls, frame);
     return extrai_lista_de_comandos(function->coms, frame);
-    //return new Eseq(new Move(   new Temp("temp","r1"),
-    //                            Call(new Name( new Label(function->ident_funcao->nome)),extrai_lista_de_declaracoes(function->decls))),
-    //                new Temp("temp","r1"));
 }
 
 Stm_ir* IRParse::extrai_lista_de_comandos(ListaComandos *commands, Frame *frame) {
@@ -229,6 +226,7 @@ void IRParse::imprime(Exp_ir* exp, Stm_ir *stm, ExpList *expList, StmList *stmLi
     if(expList != NULL){
             cout << "ExpList [";
             imprime(expList->head,NULL,NULL,NULL);
+            cout << ",";
             imprime(NULL,NULL,((ExpList*)expList)->tail,NULL);
             cout << "]";
 
@@ -236,8 +234,12 @@ void IRParse::imprime(Exp_ir* exp, Stm_ir *stm, ExpList *expList, StmList *stmLi
     if(stmList != NULL){
             cout << "StmList [";
             imprime(NULL,stmList->head,NULL,NULL);
+            cout << ",";
             imprime(NULL,NULL,NULL,stmList->tail);
             cout << "]";
 
+    }
+    if(exp == NULL && stm == NULL && stmList == NULL && expList == NULL){
+        cout << "NULL";
     }
 }
