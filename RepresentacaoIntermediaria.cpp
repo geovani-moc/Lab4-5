@@ -28,17 +28,14 @@ void Arvore_RI::gerar_representacao(Arvore_parse &arvore_parse)
 
 No_arvore_RI *Arvore_RI::gerar_representacao(No_arv_parse *no_arvore_parse)
 {
-    No_arvore_RI *nodo;
+    No_arvore_RI *novo = NULL;
     int tamanho = (int)no_arvore_parse->filhos.size();
     string nome = no_arvore_parse->tok.nome;
     string operador;
 
-    pair<string, string> valor_operador;
-    pair<string, string> valor_operador2;
-
     No_arvore_RI *temporario;
 
-    int caso = definir_caso(nodo->derivacao);
+    int caso = definir_caso(no_arvore_parse->regra);
 
     switch (caso)
     {
@@ -48,8 +45,7 @@ No_arvore_RI *Arvore_RI::gerar_representacao(No_arv_parse *no_arvore_parse)
             if (no_arvore_parse->filhos[i]->regra != -1)
             {
                 temporario = gerar_representacao(no_arvore_parse);
-                if (temporario != NULL)
-                    nodo->derivacao.push_back(temporario);
+                if (temporario != NULL) novo->derivacao.push_back(temporario);
             }
         }
         break;
@@ -60,100 +56,74 @@ No_arvore_RI *Arvore_RI::gerar_representacao(No_arv_parse *no_arvore_parse)
     case WHILE:
         break;
 
-    case BINOP:
+    case BINOP:// tem que refazer
+        novo = new No_arvore_RI;
+        operador = no_arvore_parse->filhos[2]->tok.nome;
+
+        novo = binop(operador, 
+            gerar_representacao(no_arvore_parse->filhos[0]), 
+            gerar_representacao(no_arvore_parse->filhos[2]));
         break;
 
     case ATRIBUICAO:
         break;
 
-    case VARIAVEL:
-        nodo->representacao.first = "MEM";
+    case VARIAVEL:// tem que refazer
+        novo = new No_arvore_RI;
+        novo->representacao.first = "MEM";
         operador = "+";
-        
-        valor_operador.first = "temp";
-        valor_operador.second = "FP";
 
-        valor_operador2.first = "const";
-        valor_operador2.second = to_string(frame.get_posicao(nome));
-        
-        nodo->derivacao.push_back(binop(operador, valor_operador, valor_operador2));
+       /* nodo->derivacao.push_back(
+            binop(operador, 
+            valor_operador, 
+            valor_operador2));*/
         break;
 
     case CONSTANTE:
+        novo = new No_arvore_RI;
+        novo->representacao.first = "const";
+        novo->representacao.second = no_arvore_parse->tok.imagem;      
         break;
 
     default:
         break;
     }
 
-    return nodo;
+    return novo;
 }
 
-int Arvore_RI::definir_caso(vector<No_arvore_RI *> &derivacao)
+int Arvore_RI::definir_caso(int regra)
 {
-    if (derivacao.size() == 1)
+    switch (regra)
     {
-        if (derivacao[0]->representacao.first.compare("num") == 0)
-            return CONSTANTE;
-        if (derivacao[0]->representacao.first.compare("id") == 0)
-            return VARIAVEL;
-    }
-    if (derivacao.size() >= 3)
-    {
-
-        if (derivacao[0]->representacao.first.compare("if") == 0)
-            return IF;
-        if (derivacao[0]->representacao.first.compare("while") == 0)
-            return WHILE;
-        if ((derivacao[0]->representacao.first.compare("id") == 0) && (derivacao[1]->representacao.first.compare("=") == 0))
-            return ATRIBUICAO;
-        if (derivacao[0]->representacao.first.compare("E") == 0)
-        {
-            if (derivacao[1]->representacao.first.compare("||"))
-                return BINOP;
-            if (derivacao[1]->representacao.first.compare("&&"))
-                return BINOP;
-            if (derivacao[1]->representacao.first.compare("=="))
-                return BINOP;
-            if (derivacao[1]->representacao.first.compare("!="))
-                return BINOP;
-            if (derivacao[1]->representacao.first.compare("<"))
-                return BINOP;
-            if (derivacao[1]->representacao.first.compare("+"))
-                return BINOP;
-            if (derivacao[1]->representacao.first.compare("-"))
-                return BINOP;
-            if (derivacao[1]->representacao.first.compare("*"))
-                return BINOP;
-            if (derivacao[1]->representacao.first.compare("/"))
-                return BINOP;
-            if (derivacao[1]->representacao.first.compare("%"))
-                return BINOP;
-        }
-
-        if ((derivacao[0]->representacao.first.compare("id") == 0) && (derivacao[2]->representacao.first.compare("P") == 0))
-            return FUNCAO;
+    case 11: return ATRIBUICAO;
+    case 12: return IF;
+    case 13: return WHILE;
+    case 14 ... 23: return BINOP;
+    case 25: return VARIAVEL;
+    case 26: return CONSTANTE;
+    case 27: return FUNCAO;
+    default: break;
     }
 
     return NENHUM;
 }
 
-
-No_arvore_RI* Arvore_RI::binop(string &operacao, pair<string, string> operador1, pair<string, string> operador2)
-{
-    No_arvore_RI * novo = new No_arvore_RI;
+No_arvore_RI *Arvore_RI::binop(string &operacao, No_arvore_RI *no1, No_arvore_RI *no2)//tem que refazer
+{   
+    No_arvore_RI *novo = new No_arvore_RI;
     novo->representacao.first = "BINOP";
-    
+
     No_arvore_RI *temporario = new No_arvore_RI;
     temporario->representacao.first = operacao;
     novo->derivacao.push_back(temporario);
 
     temporario = new No_arvore_RI;
-    temporario->representacao = operador1;
+    //temporario->representacao = operador1;
     novo->derivacao.push_back(temporario);
 
     temporario = new No_arvore_RI;
-    temporario->representacao = operador2;
+    //temporario->representacao = operador2;
     novo->derivacao.push_back(temporario);
 
     return novo;
