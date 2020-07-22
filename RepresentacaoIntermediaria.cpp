@@ -64,7 +64,7 @@ No_arvore_RI *Arvore_RI::gerar_representacao(No_arv_parse *no_arvore_parse)
         break;
 
     case WHILE: 
-        novo = adicionar_while(no_arvore_parse->filhos[2], no_arvore_parse->filhos[4]);//alterar 2 e 4
+        novo = adicionar_while(no_arvore_parse->filhos[2], no_arvore_parse->filhos[4]);
         break;
 
     case BINOP:
@@ -198,7 +198,64 @@ No_arvore_RI *Arvore_RI::adicionar_if(No_arv_parse *expressao, No_arv_parse *com
     return no_seq1;
 }
 
-No_arvore_RI *Arvore_RI::adicionar_while(No_arv_parse *expressao, No_arv_parse *comando)
+No_arvore_RI *Arvore_RI::adicionar_while(No_arv_parse *condicao, No_arv_parse *bloco)
 {
+    No_arvore_RI *no_seq1 = new No_arvore_RI("SEQ");
+    No_arvore_RI *no_seq2 = new No_arvore_RI("SEQ");
+    No_arvore_RI *no_seq3 = new No_arvore_RI("SEQ");
+    No_arvore_RI *no_seq4 = new No_arvore_RI("SEQ");
+    No_arvore_RI *no_seq5 = new No_arvore_RI("SEQ");
+    No_arvore_RI *no_cjump = new No_arvore_RI("CJUMP");
+    No_arvore_RI *no_jump = new No_arvore_RI("JUMP");
 
+
+    No_arvore_RI *no_label_teste = new No_arvore_RI(
+        "LABEL",
+        ("label_" + to_string(contador_names))
+    );
+    No_arvore_RI *no_name_teste = new No_arvore_RI(
+        "NAME",
+        ("name_" + to_string(contador_names++))
+    );
+
+    No_arvore_RI *no_label_continuar = new No_arvore_RI(
+        "LABEL",
+        ("label_" + to_string(contador_names))
+    );
+    No_arvore_RI *no_name_continuar = new No_arvore_RI(
+        "NAME",
+        ("name_" + to_string(contador_names++))
+    );
+
+    No_arvore_RI *no_label_fim = new No_arvore_RI(
+        "LABEL",
+        ("label_" + to_string(contador_names))
+    );
+    No_arvore_RI *no_name_fim = new No_arvore_RI(
+        "LABEL",
+        ("name_" + to_string(contador_names++))
+    );
+
+    no_cjump->derivacao.push_back(gerar_representacao(condicao));
+    no_cjump->derivacao.push_back(no_label_fim);
+    no_cjump->derivacao.push_back(no_label_continuar);
+
+    no_jump->derivacao.push_back(no_name_teste);
+
+    no_seq5->derivacao.push_back(gerar_representacao(bloco));
+    no_seq5->derivacao.push_back(no_jump);
+
+    no_seq4->derivacao.push_back(no_label_continuar);
+    no_seq4->derivacao.push_back(no_seq5);
+
+    no_seq3->derivacao.push_back(no_seq4);
+    no_seq3->derivacao.push_back(no_label_fim);
+
+    no_seq2->derivacao.push_back(no_cjump);
+    no_seq2->derivacao.push_back(no_seq3);
+
+    no_seq1->derivacao.push_back(no_label_teste);
+    no_seq1->derivacao.push_back(no_seq2);
+
+    return no_seq1;
 }
