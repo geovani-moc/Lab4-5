@@ -25,6 +25,8 @@ public:
     vector<No_arvore_RI *> derivacao;
 
     No_arvore_RI();
+    No_arvore_RI(string nome);
+    No_arvore_RI(string nome, string imagem);
 };
 
 class Arvore_RI
@@ -40,7 +42,9 @@ private:
 
     No_arvore_RI *binop(string &operacao, No_arvore_RI *no1, No_arvore_RI *no2);
     No_arvore_RI *variavel(No_arv_parse *no);
-    
+    No_arvore_RI *adicionar_if(No_arv_parse *expressao, No_arv_parse *comando);
+    No_arvore_RI *adicionar_while(No_arv_parse *expressao, No_arv_parse *comando);
+
 public:
     Arvore_RI(Arvore_parse &arvore_parse);
 };
