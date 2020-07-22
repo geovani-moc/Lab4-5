@@ -38,7 +38,7 @@ No_arvore_RI *Arvore_RI::gerar_representacao(No_arv_parse *no_arvore_parse)
 
     switch (caso)
     {
-    case NENHUM:
+    case NENHUM: //revisar
         for (int i = 0; i < tamanho; ++i)
         {
             if (no_arvore_parse->filhos[i]->regra != -1)
@@ -49,13 +49,13 @@ No_arvore_RI *Arvore_RI::gerar_representacao(No_arv_parse *no_arvore_parse)
         }
         break;
 
-    case IF:
+    case IF: //falta fazer
         break;
 
-    case WHILE:
+    case WHILE: // falta fazer
         break;
 
-    case BINOP:// tem que refazer
+    case BINOP:
         novo = new No_arvore_RI;
 
         novo = binop(no_arvore_parse->filhos[2]->tok.nome, 
@@ -74,15 +74,8 @@ No_arvore_RI *Arvore_RI::gerar_representacao(No_arv_parse *no_arvore_parse)
 
         break;
 
-    case VARIAVEL:// tem que refazer
-        novo = new No_arvore_RI;
-        novo->representacao.first = "MEM";
-        //operador = "+";
-
-       /* nodo->derivacao.push_back(
-            binop(operador, 
-            valor_operador, 
-            valor_operador2));*/
+    case VARIAVEL:
+        novo = variavel(no_arvore_parse->filhos[0]);
         break;
 
     case CONSTANTE:
@@ -90,6 +83,9 @@ No_arvore_RI *Arvore_RI::gerar_representacao(No_arv_parse *no_arvore_parse)
         novo->representacao.first = "const";
         novo->representacao.second = no_arvore_parse->tok.imagem;      
         break;
+    
+    case FUNCAO://falta fazer
+    break;
 
     default:
         break;
@@ -132,7 +128,19 @@ No_arvore_RI *Arvore_RI::binop(string &operacao, No_arvore_RI *no1, No_arvore_RI
 
 No_arvore_RI * Arvore_RI::variavel(No_arv_parse *no)
 {
-    No_arvore_RI *novo;
+    No_arvore_RI *novo = new No_arvore_RI;
+    No_arvore_RI *no1 = new No_arvore_RI;
+    No_arvore_RI *no2 = new No_arvore_RI;
+    string operacao = "+";
+
+    no1->representacao.first = "temp";
+    no1->representacao.second = "FP";
+
+    no2->representacao.first = "const";
+    no2->representacao.second = to_string(frame.get_posicao(no->tok.imagem));
+
+    novo->representacao.first = "MEM";
+    novo->derivacao.push_back(binop(operacao, no1, no2));
 
     return novo;
 }
