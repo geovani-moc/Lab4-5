@@ -4,8 +4,14 @@
 
 using namespace std;
 
-class Exp_ir {};
-class Stm_ir {};
+class Exp_ir {
+    public:
+        virtual string TypeClass() = 0;
+};
+class Stm_ir {
+    public:
+        virtual string TypeClass() = 0;
+};
 
 class ExpList {
     public:
@@ -25,6 +31,7 @@ class Label: public Stm_ir {
     public:
         string label;
         Label(string l);
+        string TypeClass();
 };
 
 
@@ -32,12 +39,14 @@ class Const: public Exp_ir {
     public:
         string value;
         Const(string v);
+        string TypeClass();
 };
 
 class Name: public Exp_ir {
     public:
         Label *label;
         Name(Label *l);
+        string TypeClass();
 };
 
 class Temp: public Exp_ir {
@@ -45,20 +54,23 @@ class Temp: public Exp_ir {
         string temp;
         string value;
         Temp(string t, string v);
+        string TypeClass();
 };
 
 class Binop: public Exp_ir {
     public:
-        string binop;
+        string op;
         Exp_ir *left;
         Exp_ir *right;
-        Binop(string b, Exp_ir *l, Exp_ir *r);
+        Binop(string o, Exp_ir *l, Exp_ir *r);
+        string TypeClass();
 };
 
 class Mem: public Exp_ir {
     public:
         Exp_ir *exp;
         Mem(Exp_ir *e);
+        string TypeClass();
 };
 
 class Call: public Exp_ir {
@@ -66,6 +78,7 @@ class Call: public Exp_ir {
         Exp_ir *func;
         ExpList *args;
         Call(Exp_ir *f, ExpList *a);
+        string TypeClass();
 };
 
 class Eseq: public Exp_ir {
@@ -73,19 +86,22 @@ class Eseq: public Exp_ir {
         Stm_ir *stm;
         Exp_ir *exp;
         Eseq(Stm_ir *s, Exp_ir *e);
+        string TypeClass();
 };
 
 class Move: public Stm_ir {
     public:
-        Exp_ir *dist;
+        Exp_ir *dest;
         Exp_ir *src;
         Move(Exp_ir *d, Exp_ir *s);
+        string TypeClass();
 };
 
 class Ex: public Stm_ir {
     public:
         Exp_ir *exp;
         Ex(Exp_ir *e);
+        string TypeClass();
 };
 
 class LabelList {
@@ -100,6 +116,7 @@ class Jump: public Stm_ir {
         Exp_ir *exp;
         LabelList *labellist;
         Jump(Exp_ir *e, LabelList *l);
+        string TypeClass();
 };
 
 class Cjump: public Stm_ir {
@@ -110,6 +127,7 @@ class Cjump: public Stm_ir {
         Label *iftrue;
         Label *iffalse;
         Cjump(string re, Exp_ir *le, Exp_ir *ri, Label *ift, Label *iff);
+        string TypeClass();
 };
 
 class Seq: public Stm_ir {
@@ -117,6 +135,7 @@ class Seq: public Stm_ir {
         Stm_ir *left;
         Stm_ir *right;
         Seq(Stm_ir *l, Stm_ir *r);
+        string TypeClass();
 };
 
 #endif

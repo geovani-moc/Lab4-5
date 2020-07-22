@@ -53,5 +53,6 @@ int main(int argc, char * argv[]) {
   IRParse ir_parser;
   Stm_ir* IR = ir_parser.extrai_funcao(func, &frame);
   cerr << "tamanho do frame = " << frame.get_tamanho_do_frame() << endl;
+  ir_parser.imprime(NULL,IR,NULL,NULL);
   return 0;
 }

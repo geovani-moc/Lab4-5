@@ -134,3 +134,110 @@ void IRParse::extrai_lista_de_declaracoes(ListaDeclaracao *decList, Frame *frame
         extrai_lista_de_declaracoes(decList->prox, frame);
     }
 }
+
+void IRParse::imprime(Exp_ir* exp, Stm_ir *stm, ExpList *expList, StmList *stmList) {
+    string op;
+    if(exp != NULL){
+        op = exp->TypeClass();
+        if(op == "Const") {
+            cout <<"Const ["<<((Const*)exp)->value<<"]";
+        }
+        if(op == "Name") {
+            cout << "Name ["; 
+            imprime(NULL,((Name*)exp)->label,NULL,NULL);
+            cout << "]";
+        }
+        if(op == "Temp") {
+            cout << "Temp ["; 
+            cout << ((Temp*)exp)->temp<<":"<<((Temp*)exp)->value;
+            cout << "]";
+        }
+        if(op == "Binop") {
+            cout << "Binop ["; 
+            imprime(((Binop*)exp)->left,NULL,NULL,NULL);
+            cout << ",";
+            cout << ((Binop*)exp)->op;
+            cout << ",";
+            imprime(((Binop*)exp)->right,NULL,NULL,NULL);
+            cout << "]";
+        }
+        if(op == "Mem") {
+            cout << "Mem ["; 
+            imprime(((Mem*)exp)->exp,NULL,NULL,NULL);
+            cout << "]";
+        }
+        if(op == "Call") {
+            cout << "Call ["; 
+            imprime(((Call*)exp)->func,NULL,NULL,NULL);
+            cout << ",";
+            imprime(NULL,NULL,((Call*)exp)->args,NULL);
+            cout << "]";
+        }
+        if(op == "Eseq") {
+            cout << "Eseq ["; 
+            imprime(((Eseq*)exp)->exp,NULL,NULL,NULL);
+            cout << ",";
+            imprime(NULL,((Eseq*)exp)->stm,NULL,NULL);
+            cout << "]";
+        }
+    }
+    if(stm != NULL){
+        op = stm->TypeClass();
+        if(op == "Label") {
+            cout << "Label ["<<((Label*)stm)->label<< "]";
+        }
+        if(op == "Move") {
+            cout << "Move ["; 
+            imprime(((Move*)stm)->dest,NULL,NULL,NULL);
+            cout << ",";
+            imprime(((Move*)stm)->src,NULL,NULL,NULL);
+            cout << "]";
+
+        }
+        if(op == "Ex") {
+            cout << "Ex ["; 
+            imprime(((Ex*)stm)->exp,NULL,NULL,NULL);
+            cout << "]";
+        }
+        if(op == "Jump") {
+            cout << "Jump ["; 
+            imprime(((Jump*)stm)->exp,NULL,NULL,NULL);
+            cout << "]";
+        }
+        if(op == "Cjump") {
+            cout << "Cjump ["; 
+            imprime(((Cjump*)stm)->left,NULL,NULL,NULL);
+            cout << ",";
+            cout << ((Cjump*)stm)->relop;
+            cout << ",";
+            imprime(((Cjump*)stm)->right,NULL,NULL,NULL);
+            cout << ",";
+            imprime(NULL,((Cjump*)stm)->iftrue,NULL,NULL);
+            cout << ",";
+            imprime(NULL,((Cjump*)stm)->iffalse,NULL,NULL);
+            cout << "]";
+        }
+        if(op == "Seq") {
+            cout << "Seq [";
+            imprime(NULL,((Seq*)stm)->left,NULL,NULL);
+            cout << ",";
+            imprime(NULL,((Seq*)stm)->right,NULL,NULL);
+            cout << "]";
+        }
+
+    }
+    if(expList != NULL){
+            cout << "ExpList [";
+            imprime(expList->head,NULL,NULL,NULL);
+            imprime(NULL,NULL,((ExpList*)expList)->tail,NULL);
+            cout << "]";
+
+    }
+    if(stmList != NULL){
+            cout << "StmList [";
+            imprime(NULL,stmList->head,NULL,NULL);
+            imprime(NULL,NULL,NULL,stmList->tail);
+            cout << "]";
+
+    }
+}
