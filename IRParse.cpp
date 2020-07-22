@@ -150,10 +150,10 @@ void IRParse::imprime(Exp_ir* exp, Stm_ir *stm, ExpList *expList, StmList *stmLi
             cout << ")";
         }
         if(op == "Binop") {
-            cout << "Binop ("; 
-            imprime(((Binop*)exp)->left,NULL,NULL,NULL);
-            cout << ",";
+            cout << "Binop (";
             cout << ((Binop*)exp)->op;
+            cout << ","; 
+            imprime(((Binop*)exp)->left,NULL,NULL,NULL);
             cout << ",";
             imprime(((Binop*)exp)->right,NULL,NULL,NULL);
             cout << ")";
