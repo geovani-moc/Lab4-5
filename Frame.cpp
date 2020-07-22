@@ -1,111 +1,48 @@
 #include "Frame.hpp"
 
-Frame::Frame(){
-    
+void Frame::AtribuiID(string str_id) {
+    tuple<string, int> temporario;
+    get<0>(temporario) = str_id;
+    get<1>(temporario) = (-16) - (8 * ((int)variaveis.size()));
+    variaveis.push_back(temporario);
 }
 
-Frame::Frame(Arvore_parse &arvore)
-{
-    endereco_de_retorno = 0;
-    frame_pointer_anterior = -8;
-
-    identificar_variaveis(arvore);
-    identificar_parametros(arvore);
-
-    valor_de_retorno = ((int)(variaveis.size() + parametros.size() + 2)) * (-8);
-
-    tamanho_frame = calcula_tamanho_do_frame();
+void Frame::AtribuiParam(string str_param) {
+    tuple<string, int> temporario;
+    get<0>(temporario) = str_param;
+    get<1>(temporario) = (+16) + (8 * ((int)parametros.size()));
+    parametros.push_back(temporario);
 }
 
-
-int Frame::calcula_tamanho_do_frame()
-{
-    return 8 * (int)(3 + variaveis.size() + parametros.size());
-}
-
-int Frame::get_tamanho_do_frame() { return tamanho_frame; }
-
-int Frame::get_posicao_frame_pointer_anterior() { return frame_pointer_anterior; }
-
-int Frame::get_posicao_endereco_retorno() { return endereco_de_retorno; }
-
-int Frame::get_posicao_valor_de_retorno() { return valor_de_retorno; }
-
-int Frame::get_posicao(string &nome)
-{
+int Frame::get_posicao(string str_var) {
     int tamanho = variaveis.size();
     for (int i = 0; i < tamanho; i++)
     {
-        if (get<0>(variaveis[i]) == nome) return get<1>(variaveis[i]);
+        if (get<0>(variaveis[i]) == str_var) return get<1>(variaveis[i]);
     }
 
     tamanho = parametros.size();
     for (int i = 0; i < tamanho; i++)
     {
-        if (get<0>(parametros[i]) == nome) return get<1>(parametros[i]);
+        if (get<0>(parametros[i]) == str_var) return get<1>(parametros[i]);
     }
 
     cerr << "\nErro: varivavel ou parametro nao encontrada no frame." << endl;
-    exit(EXIT_FAILURE);
 }
 
-void Frame::identificar_variaveis(Arvore_parse &arvore)
-{
-    No_arv_parse *raiz = arvore.raiz;
-
-    int quantidade_filhos = (int)raiz->filhos.size();
-
-    for (int i = 6; i < quantidade_filhos; ++i)
-    {
-        if (raiz->filhos[i]->regra != -1) identificar_variaveis(raiz->filhos[i]);
-    }
+int Frame::get_tamanho_do_frame() {
+    return 8 * (int)(3 + variaveis.size() + parametros.size());
 }
 
-void Frame::identificar_variaveis(No_arv_parse *no_arvore)
-{
-    if (no_arvore->tok.nome.compare("D") == 0)
-    {
-        tuple<string, int> temporario;
-        get<0>(temporario) = no_arvore->filhos[1]->tok.imagem;
-        get<1>(temporario) = (-16) - (8 * (int)variaveis.size());
-
-        variaveis.push_back(temporario);
-    }
-    int tamanho = (int)no_arvore->filhos.size();
-
-    for (int i = 0; i < tamanho; ++i)
-    {
-        if (no_arvore->filhos[i]->regra != -1) identificar_variaveis(no_arvore->filhos[i]);
-    }
+void Frame::AtribuiParamChamada() {
+    AtribuiID("chamada"+to_string(contador++));
 }
 
-void Frame::identificar_parametros(Arvore_parse &arvore)
-{
-    vector<tuple<string, int, int *>> parametros;
-    No_arv_parse *raiz = arvore.raiz;
-
-    int quantidade_filhos = (int)raiz->filhos.size();
-
-    for (int i = 0; i < quantidade_filhos; ++i)
-    {
-        if (raiz->filhos[i]->regra != -1) identificar_parametros(raiz->filhos[i]);
-    }
+Frame::Frame() {
+    contador = 0;
+    frame_pointer = 0;
 }
 
-void Frame::identificar_parametros(No_arv_parse *no_arvore)
-{
-    if (no_arvore->tok.nome.compare("P") == 0)
-    {
-        tuple<string, int> temporario;
-        get<0>(temporario) = "parametro" + to_string(parametros.size());
-        get<1>(temporario) = (-16) - (8 * ((int)parametros.size() + variaveis.size()));
-
-        parametros.push_back(temporario);
-    }
-    int tamanho = (int)no_arvore->filhos.size();
-
-    for (int i = 0; i < tamanho; ++i)
-    {
-        if (no_arvore->filhos[i]->regra != -1) identificar_parametros(no_arvore->filhos[i]);
-    }
+int Frame::get_posicao_frame_pointer_anterior(){
+    return frame_pointer;
 }

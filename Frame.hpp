@@ -1,41 +1,27 @@
-#ifndef FRAME_HPP
-#define FRAME_HPP
-
+#ifndef _FRAME_HPP_
+#define _FRAME_HPP_
+#include <iostream>
 #include <vector>
-#include <utility>
 #include <string>
 #include <tuple>
 
-#include "Arvore.hpp"
+using namespace std;
 
-class Frame
-{
-private://posicoes definidas em relacao ao stack pointer
-    int endereco_de_retorno;
-    int frame_pointer_anterior;
+class Frame {
+    private:
+        int frame_pointer;
+        vector<tuple<string, int>> variaveis;
+        vector<tuple<string, int>> parametros;
+        int contador;
+    public:
+        void AtribuiID(string str_id);
+        void AtribuiParam(string str_param);
+        int get_posicao(string str_var);
+        void AtribuiParamChamada();
+        int get_tamanho_do_frame();
+        int get_posicao_frame_pointer_anterior();
+        Frame();
 
-    vector<tuple<string, int>> variaveis;
-    vector<tuple<string, int>> parametros;
-
-    int valor_de_retorno;
-    int tamanho_frame;
-
-    int calcula_tamanho_do_frame();
-
-    void identificar_variaveis(Arvore_parse &arvore);
-    void identificar_variaveis(No_arv_parse *no_arvore);
-
-    void identificar_parametros(Arvore_parse &arvore);
-    void identificar_parametros(No_arv_parse *no_arvore);
-
-public:
-    Frame();
-    Frame(Arvore_parse &arvore);
-    int get_tamanho_do_frame();
-    int get_posicao_frame_pointer_anterior();
-    int get_posicao_endereco_retorno();
-    int get_posicao_valor_de_retorno();
-    int get_posicao(string &nome);
 };
 
 #endif
