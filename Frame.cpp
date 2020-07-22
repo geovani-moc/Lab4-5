@@ -31,7 +31,8 @@ int Frame::get_posicao(string str_var) {
 }
 
 int Frame::get_tamanho_do_frame() {
-    return 8 * (int)(3 + variaveis.size() + parametros.size());
+    //return 8 * (int)(3 + variaveis.size() + parametros.size());
+    return 8 * (int)(3 + variaveis.size());
 }
 
 void Frame::AtribuiParamChamada() {
