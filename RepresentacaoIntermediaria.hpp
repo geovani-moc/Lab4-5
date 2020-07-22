@@ -6,14 +6,22 @@
 #include "Arvore.hpp"
 #include "Frame.hpp"
 
+#define NENHUM (0)
 #define SEQ (1)
+#define IF (2)
+#define WHILE (3)
+#define ATRIBUICAO (4)
+#define VARIAVEL (5)
+#define CONSTANTE (6)
+#define BINOP (7)
+
 
 using namespace std;
 
 class No_arvore_RI
 {
 public:
-    pair<int, string> representacao;
+    pair<string, string> representacao;
     vector<No_arvore_RI *> derivacao;
 
     No_arvore_RI();
@@ -28,6 +36,7 @@ private:
 
     void gerar_representacao(Arvore_parse &arvore_parser);
     No_arvore_RI *gerar_representacao(No_arv_parse *no_arvore_parse);
+    int definir_caso(vector<No_arvore_RI*> &derivacao);
 
 public:
     Arvore_RI(Arvore_parse &arvore_parse);
