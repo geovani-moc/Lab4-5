@@ -30,13 +30,11 @@ ID * Arvore_parse::extrai_ID(No_arv_parse * no) {
 }
 
 Funcao * Arvore_parse::extrai_funcao(No_arv_parse * no) {
-  cerr << endl<<" @@ "<< endl;
   if (no==NULL) cerr << " NULL " << endl;
   if (no->regra != 1) {
     cerr << "Erro conversao"<< endl;
     return NULL;
   }
-  cerr << endl<<"###"<< endl;
   return new Funcao(extrai_ID(no->filhos[1]), 
                     extrai_ListaParametro(no->filhos[3]),
                     extrai_ListaDeclaracao(no->filhos[6]),
@@ -70,7 +68,6 @@ ListaComandos* Arvore_parse::extrai_ListaComandos(No_arv_parse * no){
 
 Exp* Arvore_parse::extrai_Exp(No_arv_parse * no){
   if (no->regra >=14 && no->regra <=23) {
-    cout << no->filhos[1]->tok.imagem << " # " << no->filhos[1]->tok.nome << " [Arvore.cpp:73]" << endl;
     return new ExpOper(no->filhos[1]->tok, extrai_Exp(no->filhos[0]), extrai_Exp(no->filhos[2]));
   }
   if (no->regra == 24) {

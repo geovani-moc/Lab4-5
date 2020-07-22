@@ -3,9 +3,9 @@
 class Exp;
 
 Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
-    cerr << "adicionou nó equivalente a " << exp->TypeClass() << endl;
+    //cerr << "adicionou nó equivalente a " << exp->TypeClass() << endl;
     if(exp->TypeClass().compare("ExpID") == 0) {
-        cerr << "Acessou ID [" <<((ID*)((ExpID*)exp)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer_anterior()<<endl;
+        //cerr << "Acessou ID [" <<((ID*)((ExpID*)exp)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer_anterior()<<endl;
         return new Mem( new Binop(  "+", // aqui sempre será feita uma soma do FP com o "delta a"
                                     new Temp("FP",to_string(frame->get_posicao_frame_pointer_anterior())),
                                     new Const(to_string(frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)))));
@@ -38,7 +38,7 @@ Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
 //usando a padronização do livro
 Stm_ir* IRParse::extrai_comando(Comando *command, Frame *frame) {
 
-    cout << "adicionou nó equivalente a " << command->TypeClass() << endl;
+    //cout << "adicionou nó equivalente a " << command->TypeClass() << endl;
 
     if(command->TypeClass().compare("ComandoIF") == 0) {
         string verdadeiro = GerarNome("verdadeiro");
@@ -52,7 +52,7 @@ Stm_ir* IRParse::extrai_comando(Comando *command, Frame *frame) {
     }
 
     if(command->TypeClass().compare("ComandoAtrib") == 0) {
-        cerr << "Acessou ID [" <<((ID*)((ComandoAtrib*)command)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ComandoAtrib*)command)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer_anterior()<<endl;
+        //cerr << "Acessou ID [" <<((ID*)((ComandoAtrib*)command)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ComandoAtrib*)command)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer_anterior()<<endl;
         return new Move( new Mem(new Binop( "+", // aqui sempre será feita uma soma do FP com o "delta a"
                                             new Temp("FP",to_string(frame->get_posicao_frame_pointer_anterior())),
                                             new Const(to_string(frame->get_posicao(((ID*)((ComandoAtrib*)command)->id)->nome))))),
@@ -80,7 +80,7 @@ Stm_ir* IRParse::extrai_comando(Comando *command, Frame *frame) {
                                                                             new Ex(new Name(new Label(fim))))))));
     }
     if (command != NULL) {
-        cerr << "[Erro:001]não executou nenhum return ["<<command->TypeClass()<<"]" << endl;
+        cerr << "[Erro:001] Não executou nenhum return ["<<command->TypeClass()<<"]" << endl;
     } else {
         cerr << "[info:001] NULL pointer" << endl;
     } 
@@ -137,72 +137,72 @@ void IRParse::imprime(Exp_ir* exp, Stm_ir *stm, ExpList *expList, StmList *stmLi
     if(exp != NULL){
         op = exp->TypeClass();
         if(op == "Const") {
-            cout <<"Const ["<<((Const*)exp)->value<<"]";
+            cout <<"Const ("<<((Const*)exp)->value<<")";
         }
         if(op == "Name") {
-            cout << "Name ["; 
+            cout << "Name ("; 
             imprime(NULL,((Name*)exp)->label,NULL,NULL);
-            cout << "]";
+            cout << ")";
         }
         if(op == "Temp") {
-            cout << "Temp ["; 
+            cout << "Temp ("; 
             cout << ((Temp*)exp)->temp<<":"<<((Temp*)exp)->value;
-            cout << "]";
+            cout << ")";
         }
         if(op == "Binop") {
-            cout << "Binop ["; 
+            cout << "Binop ("; 
             imprime(((Binop*)exp)->left,NULL,NULL,NULL);
             cout << ",";
             cout << ((Binop*)exp)->op;
             cout << ",";
             imprime(((Binop*)exp)->right,NULL,NULL,NULL);
-            cout << "]";
+            cout << ")";
         }
         if(op == "Mem") {
-            cout << "Mem ["; 
+            cout << "Mem ("; 
             imprime(((Mem*)exp)->exp,NULL,NULL,NULL);
-            cout << "]";
+            cout << ")";
         }
         if(op == "Call") {
-            cout << "Call ["; 
+            cout << "Call ("; 
             imprime(((Call*)exp)->func,NULL,NULL,NULL);
             cout << ",";
             imprime(NULL,NULL,((Call*)exp)->args,NULL);
-            cout << "]";
+            cout << ")";
         }
         if(op == "Eseq") {
-            cout << "Eseq ["; 
+            cout << "Eseq ("; 
             imprime(((Eseq*)exp)->exp,NULL,NULL,NULL);
             cout << ",";
             imprime(NULL,((Eseq*)exp)->stm,NULL,NULL);
-            cout << "]";
+            cout << ")";
         }
     }
     if(stm != NULL){
         op = stm->TypeClass();
         if(op == "Label") {
-            cout << "Label ["<<((Label*)stm)->label<< "]";
+            cout << "Label ("<<((Label*)stm)->label<< ")";
         }
         if(op == "Move") {
-            cout << "Move ["; 
+            cout << "Move ("; 
             imprime(((Move*)stm)->dest,NULL,NULL,NULL);
             cout << ",";
             imprime(((Move*)stm)->src,NULL,NULL,NULL);
-            cout << "]";
+            cout << ")";
 
         }
         if(op == "Ex") {
-            cout << "Ex ["; 
+            cout << "Ex ("; 
             imprime(((Ex*)stm)->exp,NULL,NULL,NULL);
-            cout << "]";
+            cout << ")";
         }
         if(op == "Jump") {
-            cout << "Jump ["; 
+            cout << "Jump ("; 
             imprime(((Jump*)stm)->exp,NULL,NULL,NULL);
-            cout << "]";
+            cout << ")";
         }
         if(op == "Cjump") {
-            cout << "Cjump ["; 
+            cout << "Cjump ("; 
             imprime(((Cjump*)stm)->left,NULL,NULL,NULL);
             cout << ",";
             cout << ((Cjump*)stm)->relop;
@@ -212,31 +212,31 @@ void IRParse::imprime(Exp_ir* exp, Stm_ir *stm, ExpList *expList, StmList *stmLi
             imprime(NULL,((Cjump*)stm)->iftrue,NULL,NULL);
             cout << ",";
             imprime(NULL,((Cjump*)stm)->iffalse,NULL,NULL);
-            cout << "]";
+            cout << ")";
         }
         if(op == "Seq") {
-            cout << "Seq [";
+            cout << "Seq (";
             imprime(NULL,((Seq*)stm)->left,NULL,NULL);
             cout << ",";
             imprime(NULL,((Seq*)stm)->right,NULL,NULL);
-            cout << "]";
+            cout << ")";
         }
 
     }
     if(expList != NULL){
-            cout << "ExpList [";
+            cout << "ExpList (";
             imprime(expList->head,NULL,NULL,NULL);
             cout << ",";
             imprime(NULL,NULL,((ExpList*)expList)->tail,NULL);
-            cout << "]";
+            cout << ")";
 
     }
     if(stmList != NULL){
-            cout << "StmList [";
+            cout << "StmList (";
             imprime(NULL,stmList->head,NULL,NULL);
             cout << ",";
             imprime(NULL,NULL,NULL,stmList->tail);
-            cout << "]";
+            cout << ")";
 
     }
     if(exp == NULL && stm == NULL && stmList == NULL && expList == NULL){

@@ -1,5 +1,5 @@
 all:
-	g++ *.cpp -static -Wall -Pedantic -O3
+	g++ *.cpp
 
 debug:
 	g++ *.cpp -g

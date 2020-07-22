@@ -43,12 +43,8 @@ int main(int argc, char * argv[]) {
   Parser parser(arq_gramatica, arq_tabela_lr1);
   //  parser.tabela.debug();
   Arvore_parse arv = parser.executa_parse(cin);
-  //Frame frame(arv);
   Funcao * func = arv.extrai_funcao();
 
-  cerr << func->ident_funcao->nome <<endl;
-  cerr << func->params->dec->identif->nome <<endl;
-  //cerr << func->coms->prox->com->TypeClass() << endl;
   Frame frame;
   IRParse ir_parser;
   Stm_ir* IR = ir_parser.extrai_funcao(func, &frame);
