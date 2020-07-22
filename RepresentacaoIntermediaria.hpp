@@ -14,6 +14,7 @@
 #define VARIAVEL (5)
 #define CONSTANTE (6)
 #define BINOP (7)
+#define FUNCAO (8)
 
 
 using namespace std;
@@ -37,6 +38,8 @@ private:
     void gerar_representacao(Arvore_parse &arvore_parser);
     No_arvore_RI *gerar_representacao(No_arv_parse *no_arvore_parse);
     int definir_caso(vector<No_arvore_RI*> &derivacao);
+
+    No_arvore_RI* binop(string &operacao, pair<string, string> operador1, pair<string, string> operador2);
 
 public:
     Arvore_RI(Arvore_parse &arvore_parse);

@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     cout << "Tamanho do frame: " << frame.get_tamanho_do_frame() << " bytes" << endl;
 
     //LAB 05
-    Arvore_RI representacao_intermediaria(arv);
+    //Arvore_RI representacao_intermediaria(arv);
 
     return 0;
 }
