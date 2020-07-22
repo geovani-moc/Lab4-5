@@ -5,7 +5,7 @@ class Exp;
 Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
     cerr << "adicionou nó equivalente a " << exp->TypeClass() << endl;
     if(exp->TypeClass().compare("ExpID") == 0) {
-        cerr << "AcessouX ID [" <<((ID*)((ExpID*)exp)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer_anterior()<<endl;
+        cerr << "Acessou ID [" <<((ID*)((ExpID*)exp)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer_anterior()<<endl;
         return new Mem( new Binop(  "+", // aqui sempre será feita uma soma do FP com o "delta a"
                                     new Temp("FP",to_string(frame->get_posicao_frame_pointer_anterior())),
                                     new Const(to_string(frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)))));

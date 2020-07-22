@@ -5,6 +5,7 @@ void Frame::AtribuiID(string str_id) {
     get<0>(temporario) = str_id;
     get<1>(temporario) = (-16) - (8 * ((int)variaveis.size()));
     variaveis.push_back(temporario);
+    cout << "{"<< str_id <<"}"<< endl;
 }
 
 void Frame::AtribuiParam(string str_param) {
