@@ -25,7 +25,6 @@ Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
         Eseq *retorno = new Eseq(new Move(new Temp("temporario",tempName),new Call( new Name( new Label(((ExpChamada *)exp)->nome_funcao_chamada->nome)),
                          new ExpList( extrai_exp(((ExpChamada *)exp)->lista_exp->exp, frame),
                                       extrai_lista_de_expressoes( ((ExpChamada *)exp)->lista_exp->prox, frame )))), new Temp("temporario",tempName));
-        cout << "chamada0" << endl;
         frame->AtribuiParamChamada("chamada"+to_string(contadorChamada)+":"+to_string(contador_tmp));
         return retorno;
     }
