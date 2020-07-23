@@ -10,6 +10,8 @@ using namespace std;
 class IRParse {
     private:
         int contador;
+        int contadorChamada;
+        int contadorParametros;
         string GerarNome(string str);
     public:
         Exp_ir* extrai_exp(Exp *exp, Frame *frame);

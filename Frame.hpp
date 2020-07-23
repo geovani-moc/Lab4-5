@@ -17,7 +17,7 @@ class Frame {
         void AtribuiID(string str_id);
         void AtribuiParam(string str_param);
         int get_posicao(string str_var);
-        void AtribuiParamChamada();
+        void AtribuiParamChamada(string str);
         int get_tamanho_do_frame();
         int get_posicao_frame_pointer_anterior();
         Frame();

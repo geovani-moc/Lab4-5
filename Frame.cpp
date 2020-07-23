@@ -4,7 +4,7 @@ void Frame::AtribuiID(string str_id) {
     tuple<string, int> temporario;
     get<0>(temporario) = str_id;
     get<1>(temporario) = (-16) - (8 * ((int)variaveis.size()));
-    cout << "Adicionado declaracao ["<< str_id << "] em ["<<((-16) - (8 * ((int)variaveis.size())))<<"]" << endl;
+    cout << "Adicionado ["<< str_id << "] em ["<<((-16) - (8 * ((int)variaveis.size())))<<"]" << endl;
     variaveis.push_back(temporario);
 }
 
@@ -12,6 +12,7 @@ void Frame::AtribuiParam(string str_param) {
     tuple<string, int> temporario;
     get<0>(temporario) = str_param;
     get<1>(temporario) = (+16) + (8 * ((int)parametros.size()));
+    cout << "Adicionado ["<< str_param << "] em ["<<((+16) + (8 * ((int)parametros.size())))<<"]" << endl;
     parametros.push_back(temporario);
 }
 
@@ -32,13 +33,11 @@ int Frame::get_posicao(string str_var) {
 }
 
 int Frame::get_tamanho_do_frame() {
-    //return 8 * (int)(3 + variaveis.size() + parametros.size());
     return 8 * (int)(3 + variaveis.size());
 }
 
-void Frame::AtribuiParamChamada() {
-    cout << "Adicionando chamada" << endl;
-    AtribuiID("chamada"+to_string(contador++));
+void Frame::AtribuiParamChamada(string str) {
+    AtribuiID(str);
 }
 
 Frame::Frame() {
