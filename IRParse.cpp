@@ -3,7 +3,7 @@
 class Exp;
 
 Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
-    //cerr << "adicionou nó equivalente a " << exp->TypeClass() << endl;
+    cerr << "Xadicionou nó equivalente a " << exp->TypeClass() << endl;
     if(exp->TypeClass().compare("ExpID") == 0) {
         cerr << "Acessou ID [" <<((ID*)((ExpID*)exp)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer()<<endl;
         return new Mem( new Binop(  "+", // aqui sempre será feita uma soma do FP com o "delta a"
@@ -42,7 +42,7 @@ Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
 //usando a padronização do livro
 Stm_ir* IRParse::extrai_comando(Comando *command, Frame *frame) {
 
-    //cout << "adicionou nó equivalente a " << command->TypeClass() << endl;
+    cout << "adicionou nó equivalente a " << command->TypeClass() << endl;
 
     if(command->TypeClass().compare("ComandoIF") == 0) {
         string verdadeiro = GerarNome("verdadeiro");
@@ -97,8 +97,8 @@ Stm_ir* IRParse::extrai_funcao(Funcao *function, Frame *frame) {
 }
 
 Stm_ir* IRParse::extrai_lista_de_comandos_funcao(ListaComandos *commands, Frame *frame, Exp *retorno) {
-    if(commands->prox == NULL) {
-        return new Seq(extrai_comando(commands->com, frame), extrai_lista_de_comandos(commands->prox, frame));
+    if(commands->prox != NULL) {
+        return new Seq(extrai_comando(commands->com, frame), extrai_lista_de_comandos_funcao(commands->prox, frame,retorno));
     }
     return new Seq(extrai_comando(commands->com, frame), new Move( new Mem( new Temp("retorno",to_string(frame->get_retorno()))),extrai_exp(retorno, frame)));
 }
@@ -118,6 +118,7 @@ ExpList* IRParse::extrai_lista_de_expressoes(ListaExpressoes * explist, Frame *f
         frame->AtribuiParamChamada("chamada"+to_string(contadorChamada)+":"+to_string(contador_tmp));
         return retorno;
     }
+    
     contadorParametros = 0;
     return NULL;
 }
