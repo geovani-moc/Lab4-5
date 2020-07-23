@@ -100,7 +100,6 @@ Stm_ir* IRParse::extrai_lista_de_comandos_funcao(ListaComandos *commands, Frame 
     if(commands->prox == NULL) {
         return new Seq(extrai_comando(commands->com, frame), extrai_lista_de_comandos(commands->prox, frame));
     }
-    cout << "executou" <<endl;
     return new Seq(extrai_comando(commands->com, frame), new Move( new Mem( new Temp("retorno",to_string(frame->get_retorno()))),extrai_exp(retorno, frame)));
 }
 

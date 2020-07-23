@@ -58,5 +58,5 @@ int Frame::get_endereco_retorno() {
 }
 
 int Frame::get_retorno() {
-    return frame_pointer;
+    return -8 * (int)(2 + variaveis.size());
 }
