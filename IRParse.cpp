@@ -3,9 +3,9 @@
 class Exp;
 
 Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
-    cerr << "Xadicionou nó equivalente a " << exp->TypeClass() << endl;
+    //cerr << "adicionou nó equivalente a " << exp->TypeClass() << endl;
     if(exp->TypeClass().compare("ExpID") == 0) {
-        cerr << "Acessou ID [" <<((ID*)((ExpID*)exp)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer()<<endl;
+        //cerr << "Acessou ID [" <<((ID*)((ExpID*)exp)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer()<<endl;
         return new Mem( new Binop(  "+", // aqui sempre será feita uma soma do FP com o "delta a"
                                     new Temp("FP",to_string(frame->get_posicao_frame_pointer())),
                                     new Const(to_string(frame->get_posicao(((ID*)((ExpID*)exp)->id)->nome)))));
@@ -42,7 +42,7 @@ Exp_ir* IRParse::extrai_exp(Exp *exp, Frame *frame){
 //usando a padronização do livro
 Stm_ir* IRParse::extrai_comando(Comando *command, Frame *frame) {
 
-    cout << "adicionou nó equivalente a " << command->TypeClass() << endl;
+    //cout << "adicionou nó equivalente a " << command->TypeClass() << endl;
 
     if(command->TypeClass().compare("ComandoIF") == 0) {
         string verdadeiro = GerarNome("verdadeiro");
@@ -56,7 +56,7 @@ Stm_ir* IRParse::extrai_comando(Comando *command, Frame *frame) {
     }
 
     if(command->TypeClass().compare("ComandoAtrib") == 0) {
-        cerr << "AcessouX ID [" <<((ID*)((ComandoAtrib*)command)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ComandoAtrib*)command)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer()<<endl;
+        //cerr << "Acessou ID [" <<((ID*)((ComandoAtrib*)command)->id)->nome << "] na posição [" << frame->get_posicao(((ID*)((ComandoAtrib*)command)->id)->nome)<< "]. frame = "<< frame->get_posicao_frame_pointer()<<endl;
         return new Move( new Mem(new Binop( "+", // aqui sempre será feita uma soma do FP com o "delta a"
                                             new Temp("FP",to_string(frame->get_posicao_frame_pointer())),
                                             new Const(to_string(frame->get_posicao(((ID*)((ComandoAtrib*)command)->id)->nome))))),
@@ -118,7 +118,7 @@ ExpList* IRParse::extrai_lista_de_expressoes(ListaExpressoes * explist, Frame *f
         frame->AtribuiParamChamada("chamada"+to_string(contadorChamada)+":"+to_string(contador_tmp));
         return retorno;
     }
-    
+
     contadorParametros = 0;
     return NULL;
 }
