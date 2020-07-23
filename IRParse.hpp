@@ -19,6 +19,7 @@ class IRParse {
         Stm_ir* extrai_comando(Comando *command, Frame *frame);
         Stm_ir* extrai_funcao(Funcao *function, Frame *frame);
         Stm_ir* extrai_lista_de_comandos(ListaComandos *commands, Frame *frame);
+        Stm_ir* extrai_lista_de_comandos_funcao(ListaComandos *commands, Frame *frame, Exp *retorno);
         void extrai_lista_de_declaracoes(ListaDeclaracao *decList, Frame *frame);//adiciona as declaracoes no frame
         void extrai_lista_de_parametros(ListaParametro *paramList, Frame *frame);//adiciona os enderecos dos parametros no frame
         void imprime(Exp_ir* exp, Stm_ir *stm, ExpList *expList, StmList *stmList);

@@ -43,8 +43,20 @@ void Frame::AtribuiParamChamada(string str) {
 Frame::Frame() {
     contador = 0;
     frame_pointer = 0;
+    frame_pointer_anterior = -1;
 }
 
-int Frame::get_posicao_frame_pointer_anterior(){
+int Frame::get_posicao_frame_pointer(){
     return frame_pointer;
+}
+
+int Frame::get_posicao_frame_pointer_anterior() {
+    return frame_pointer_anterior;
+}
+int Frame::get_endereco_retorno() {
+    return frame_pointer;
+}
+
+int Frame::get_retorno() {
+    return frame_pointer - 8;
 }
